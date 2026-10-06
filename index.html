@@ -1,0 +1,4277 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CN330 · Git Open Book</title><meta name="description" content="คำสั่ง Markdown และ Git สำหรับสอบปฏิบัติ พร้อม action ผลลัพธ์ และทบทวน Assignments"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314253e'/%3E%3Cpath d='M9 8v16m0-8h13V8' stroke='%2384adff' stroke-width='3' fill='none'/%3E%3Ccircle cx='9' cy='8' r='3' fill='white'/%3E%3Ccircle cx='22' cy='8' r='3' fill='white'/%3E%3Ccircle cx='9' cy='24' r='3' fill='white'/%3E%3C/svg%3E"><link rel="stylesheet" href="style.css"><noscript><style>[hidden]{display:block!important}.toolbar,.copy{display:none!important}</style></noscript></head><body><a class="skip" href="#main">ข้ามไปเนื้อหา</a><div class="layout"><aside><div class="brand">CN330<span> /</span></div><div>Git Open Book</div><div class="side-label">ใช้ระหว่างลงมือทำ</div><nav aria-label="เมนูหลัก"><a href="#commands" class="active">ค้นคำสั่ง</a><a href="#assignments">ทบทวน Assignment</a><a href="#concepts">เข้าใจสถานะ Git</a><a href="#errors">ติด error ทำอย่างไร</a><a href="#checklist">ตรวจงานก่อนส่ง</a><a href="#sources">ขอบเขตและแหล่งข้อมูล</a></nav><p class="side-note">ขอบเขตสอบ: Markdown → Git Branch<br>รวม reset / rebase ใน A03<br>ตัวอย่าง output ไม่จำเป็นต้องเหมือนทุกตัวอักษร</p></aside><main id="main" tabindex="-1"><div class="topbar"><div class="eyebrow">CN330 / PRACTICAL REFERENCE</div><button id="print" class="print-button">พิมพ์ / บันทึก PDF</button></div><section id="commands" class="view"><h1>ตอนนี้ต้องใช้คำสั่งไหน</h1><p class="intro">เลือกตามงานที่กำลังทำ อ่านผลที่ควรได้ แล้วตรวจสถานะก่อนทำขั้นถัดไป</p><div class="toolbar"><label for="search" class="search-label">ค้นชื่อคำสั่ง เป้าหมาย หรืออาการ</label><input id="search" type="search" placeholder="เช่น แตกไฟล์ · ยกเลิก stage · merge · ไฟล์ขึ้นสองครั้ง"><div class="filters" aria-label="หมวดคำสั่ง"><button class="active" data-category-filter="all" aria-pressed="true">ทั้งหมด</button><button data-category-filter="shell" aria-pressed="false">ไฟล์และโฟลเดอร์</button><button data-category-filter="setup" aria-pressed="false">รับงานและตั้งค่า</button><button data-category-filter="stage" aria-pressed="false">Stage และ Commit</button><button data-category-filter="history" aria-pressed="false">อ่านประวัติ</button><button data-category-filter="tag" aria-pressed="false">Tag และเวอร์ชัน</button><button data-category-filter="branch" aria-pressed="false">Branch และ Merge</button><button data-category-filter="undo" aria-pressed="false">Reset และ Rebase</button><button data-category-filter="submit" aria-pressed="false">ZIP และส่งงาน</button><button data-category-filter="objects" aria-pressed="false">Git objects</button></div></div><p id="result-count" class="result-count" aria-live="polite"></p><div class="grid"><article class="card command-card" data-category="stage" data-keywords="สถานะ ดูไฟล์"><div class="card-head"><h3>git status</h3><span class="tag">Stage และ Commit</span></div><p class="when">ก่อน add/commit และเมื่อสงสัยว่ากำลังอยู่ในสถานะไหน</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>On branch main
+Changes not staged for commit:
+  modified: hello.py</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่านความต่าง HEAD ↔ index และ index ↔ working tree; ไม่เปลี่ยนไฟล์หรือสร้าง commit</p><span class="label">ตรวจด้วย</span><p>อ่าน branch และกลุ่ม Untracked / Changes to be committed / Changes not staged</p><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A02 Task 2–3</p></details></article><article class="card command-card" data-category="stage" data-keywords="stage staging index เตรียม"><div class="card-head"><h3>git add FILE</h3><span class="tag">Stage และ Commit</span></div><p class="when">เลือกเวอร์ชันปัจจุบันของไฟล์ที่จะบันทึกใน commit ถัดไป</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git add hello.py</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Changes to be committed:
+  modified: hello.py</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>จับ snapshot ของไฟล์ ณ เวลา add ลง staging; ยังไม่มี commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git diff --staged</pre></div><div class="note">ถ้าแก้ไฟล์เพิ่มหลัง add การแก้ใหม่นั้นยังไม่ staged</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A02 Task 3</p></details></article><article class="card command-card" data-category="stage" data-keywords="บันทึก snapshot"><div class="card-head"><h3>git commit -m</h3><span class="tag">Stage และ Commit</span></div><p class="when">เมื่อ staging มีการเปลี่ยนแปลงที่โจทย์ต้องการบันทึก</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git commit -m &quot;Add comment&quot;</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>[main HASH] Add comment
+หลัง commit: working tree clean ถ้าไม่มี changes อื่น</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>สร้าง commit จาก staging และเลื่อน branch ปัจจุบัน; ไม่อัปโหลด GitHub</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log -1 --oneline
+git status</pre></div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A02 Task 3</p></details></article><article class="card command-card" data-category="shell" data-keywords="ตำแหน่ง directory โฟลเดอร์ ซ่อน"><div class="card-head"><h3>pwd / ls -a</h3><span class="tag">ไฟล์และโฟลเดอร์</span></div><p class="when">ตรวจว่าตอนนี้อยู่โฟลเดอร์ไหน และ repo มี .git หรือไม่</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>pwd
+ls -a</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>/WORKSPACE/hello
+.  ..  .git  hello.py</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>ดูตำแหน่งและรายการไฟล์ รวมไฟล์ที่ขึ้นต้นด้วยจุด; ไม่เปลี่ยนไฟล์</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git rev-parse --show-toplevel</pre></div><p class="context">อยู่ที่: directory ที่กำลังทำงาน<br>อ้างอิง: A03 Task 2</p></details></article><article class="card command-card" data-category="shell" data-keywords="เข้าออกโฟลเดอร์ parent path"><div class="card-head"><h3>cd / cd ..</h3><span class="tag">ไฟล์และโฟลเดอร์</span></div><p class="when">ย้ายเข้า repo หรือกลับไป parent ก่อน zip</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>cd hello
+# ขึ้นไป directory ที่มี hello
+cd ..</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>ไม่มี output ปกติ; pwd แสดง directory ใหม่</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>เปลี่ยน current directory ของ shell; ไม่เปลี่ยน Git history</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>pwd</pre></div><div class="note">path /d/working ในงานเป็นตัวอย่าง Git Bash บน Windows; macOS ใช้ path ของเครื่องจริง</div><p class="context">อยู่ที่: shell<br>อ้างอิง: A02 Task 2 / Task 8</p></details></article><article class="card command-card" data-category="shell" data-keywords="สร้าง โฟลเดอร์ ไฟล์ ว่าง"><div class="card-head"><h3>mkdir / touch</h3><span class="tag">ไฟล์และโฟลเดอร์</span></div><p class="when">สร้าง directory หรือไฟล์ใหม่ก่อน add</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>mkdir hello
+cd hello
+touch hello.py</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>hello/ ถูกสร้าง และมี hello.py ว่าง</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>สร้างสิ่งใน working tree; mkdir ไม่สร้าง Git repo; touch ไม่ล้างไฟล์ที่มีอยู่แล้ว</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>ls -a</pre></div><p class="context">อยู่ที่: parent directory ที่ต้องการสร้าง hello<br>อ้างอิง: A02 Task 2</p></details></article><article class="card command-card" data-category="shell" data-keywords="คัดลอก copy ย้าย ส่งไฟล์"><div class="card-head"><h3>cp SOURCE DEST</h3><span class="tag">ไฟล์และโฟลเดอร์</span></div><p class="when">คัดลอก .gitignore หรือ ZIP ไปอีก repo</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>cp A03/.gitignore hello/
+cp hello2.zip A03/</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>ไฟล์ต้นทางยังอยู่ และปลายทางมีสำเนา</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>copy ไฟล์; ไม่ stage และไม่ commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>ls -a A03
+ls -a hello</pre></div><div class="note">หลัง copy ZIP ให้ cd A03 ก่อน git add/commit; DEST เป็น . หมายถึง current directory</div><p class="context">อยู่ที่: parent directory ที่มี A03 และ hello<br>อ้างอิง: A03 Task 2 / Task 14</p></details></article><article class="card command-card" data-category="shell" data-keywords="ย้าย rename เปลี่ยนชื่อ"><div class="card-head"><h3>mv / git mv</h3><span class="tag">ไฟล์และโฟลเดอร์</span></div><p class="when">ย้ายไฟล์ที่ tracked ไป directory ใหม่</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>mkdir lib
+git mv hello.py lib/</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Changes to be committed:
+  renamed: hello.py -&gt; lib/hello.py</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>git mv เปลี่ยน working tree และ stage การย้ายทันที; mv ธรรมดาต้อง stage เพิ่ม</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+git diff --staged --stat</pre></div><div class="note">ยังไม่เกิด commit จนกว่า git commit; directory lib ต้องมีอยู่ก่อน</div><p class="context">อยู่ที่: repo hello บน main<br>อ้างอิง: A03 Task 2</p></details></article><article class="card command-card" data-category="shell" data-keywords="ดู อ่านเนื้อหา"><div class="card-head"><h3>cat FILE</h3><span class="tag">ไฟล์และโฟลเดอร์</span></div><p class="when">อ่านเนื้อหาเพื่อตรวจว่า checkout/switch ได้เวอร์ชันที่ต้องการ</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>cat hello.py</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>เนื้อหา hello.py ณ working tree ปัจจุบัน</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่านไฟล์โดยไม่เปลี่ยน history</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status</pre></div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A02 Task 6</p></details></article><article class="card command-card" data-category="shell" data-keywords="เขียน append overwrite echo"><div class="card-head"><h3>&gt; / &gt;&gt;</h3><span class="tag">ไฟล์และโฟลเดอร์</span></div><p class="when">เขียนไฟล์ใหม่หรือเพิ่มข้อความตามโจทย์</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>printf &#x27;# README
+&#x27; &gt; README.md
+printf &#x27;
+More text
+&#x27; &gt;&gt; README.md</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>README.md มีหัวข้อและข้อความที่ต่อท้าย</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>&gt; แทนที่เนื้อหาเดิม; &gt;&gt; ต่อท้าย; ยังไม่ stage</p><span class="label">ตรวจด้วย</span><p>cat README.md
+git diff</p><div class="note">ตรวจชื่อไฟล์ก่อนใช้ &gt; เพราะอาจทับเนื้อหาเดิม; ตัวอย่างนี้เป็น Bash/Git Bash/zsh</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git Branch lecture</p></details></article><article class="card command-card" data-category="setup" data-keywords="บัญชี username account login classroom"><div class="card-head"><h3>gh student whoami</h3><span class="tag">รับงานและตั้งค่า</span></div><p class="when">ก่อนรับ assignment ตรวจบัญชีที่ Classroom50 ใช้</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>gh student whoami</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>บัญชี GitHub ที่เครื่องมือกำลังใช้; ต้องตรงกับบัญชีที่มีสิทธิ์</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่านบัญชีของ CLI; ไม่เปลี่ยน Git author และไม่รับงาน</p><span class="label">ตรวจด้วย</span><p>เทียบกับบัญชีที่อาจารย์ให้ใช้</p><p class="context">อยู่ที่: shell ที่มี gh student ติดตั้งแล้ว<br>อ้างอิง: Classroom50 CLI help</p></details></article><article class="card command-card" data-category="setup" data-keywords="authentication auth เข้าสู่ระบบ"><div class="card-head"><h3>gh student login</h3><span class="tag">รับงานและตั้งค่า</span></div><p class="when">เมื่อ CLI ยังไม่ login ด้วยบัญชีที่ต้องใช้</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>gh student login</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>ทำตามขั้นตอนยืนยันตัวตนจน login สำเร็จ</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>ตัวช่วย login GitHub พร้อม scopes ของ Classroom50; ไม่สร้าง commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>gh student whoami</pre></div><div class="note">user.name/user.email ไม่ใช่การ login; ไม่เก็บ token หรือรหัสผ่านในคู่มือ</div><p class="context">อยู่ที่: shell<br>อ้างอิง: Classroom50 CLI help</p></details></article><article class="card command-card" data-category="setup" data-keywords="classroom รับงาน invitation accept"><div class="card-head"><h3>gh student accept</h3><span class="tag">รับงานและตั้งค่า</span></div><p class="when">รับงานจากระบบ Classroom50 ตามรหัสอาจารย์</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>gh student accept ORG CLASSROOM ASSIGNMENT</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>ระบบสร้าง/provision repo: ORG/classroom-assignment-username</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>รับงานและเตรียม remote repo; ขั้น clone local ทำแยกต่างหาก</p><span class="label">ตรวจด้วย</span><p>เปิด URL repo ที่ระบบให้ แล้ว clone</p><div class="note">ตัวอย่าง A03 เดิม: cn330 691 a03; ข้อสอบใหม่ต้องใช้รหัสใหม่ หากอาจารย์ให้ key เพิ่ม --key KEY_FROM_TEACHER</div><p class="context">อยู่ที่: shell; แทน ORG CLASSROOM ASSIGNMENT ตามโจทย์<br>อ้างอิง: metadata A00–A03 + CLI help</p></details></article><article class="card command-card" data-category="setup" data-keywords="ดาวน์โหลด local ชื่อ repo URL"><div class="card-head"><h3>git clone URL NAME</h3><span class="tag">รับงานและตั้งค่า</span></div><p class="when">นำ repo assignment พร้อม history ลงเครื่อง และตั้งชื่อ local</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git clone &quot;REPO_URL_FROM_ASSIGNMENT&quot; A03
+cd A03</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Cloning into &#x27;A03&#x27;...
+มี directory A03 พร้อม .git และ origin</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>คัดลอก repo; NAME คือชื่อ local ไม่เปลี่ยนชื่อ GitHub repo</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git remote -v
+git rev-parse --show-toplevel</pre></div><div class="note">clone repo ที่ระบบสร้างให้คุณ ไม่ใช่ template อาจารย์; GitHub source ZIP ไม่มี history</div><p class="context">อยู่ที่: parent workspace; แทน URL ด้วยค่าจริงก่อนรัน<br>อ้างอิง: Git lecture / git-clone docs</p></details></article><article class="card command-card" data-category="setup" data-keywords="เริ่มสร้าง repository ใหม่"><div class="card-head"><h3>git init -b main</h3><span class="tag">รับงานและตั้งค่า</span></div><p class="when">เริ่ม repo hello ใหม่แยกจาก repo assignment</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git init -b main</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Initialized empty Git repository in .../hello/.git/</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>สร้าง .git และกำหนด initial branch main; ยังไม่มี commit และไม่มี origin</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+ls -a</pre></div><div class="note">assignment เดิมใช้ git init; -b main กำหนดชื่อให้ตรงตัวอย่าง อย่า init ใหม่เพื่อแก้ archive ที่ประวัติหาย</div><p class="context">อยู่ที่: directory hello ใหม่ นอก A02/A03<br>อ้างอิง: A02 Task 2</p></details></article><article class="card command-card" data-category="setup" data-keywords="ชื่อ เมล email username identity AUTHORS"><div class="card-head"><h3>git config --local</h3><span class="tag">รับงานและตั้งค่า</span></div><p class="when">ตั้งผู้เขียน commit ตาม Task 1 ในแต่ละ repo</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git config --local user.name &quot;YOUR_NAME YOUR_SURNAME&quot;
+git config --local user.email &quot;STUDENT_ID@cn330&quot;</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>ปกติไม่มี output; คำสั่งตรวจต้องแสดงชื่อจริงและรหัส@cn330</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>บันทึก identity ใน repo นี้; ไม่ใช่ GitHub login; ไม่เปลี่ยน author ของ commit เก่า</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git config --get user.name
+git config --get user.email</pre></div><div class="note">แทนชื่อและรหัสจริง; repo hello ไม่รับ local config ของ A02/A03 อัตโนมัติ</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A01/A02/A03 Task 1</p></details></article><article class="card command-card" data-category="setup" data-keywords="local global scope config"><div class="card-head"><h3>git config --show-origin</h3><span class="tag">รับงานและตั้งค่า</span></div><p class="when">เมื่อค่าชื่อ/อีเมลไม่ตรง หรือเครื่องมีหลายบัญชี</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git config --show-origin --get user.email</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>ชื่อไฟล์ config ที่ให้ค่า effective email และค่า email</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่านว่าค่ามาจาก local/global/conditional config; ไม่เปลี่ยนอะไร</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log -1 --format=&#x27;%h %an &lt;%ae&gt; %s&#x27;</pre></div><div class="note">ค่าที่อ่านได้ตอนนี้กับ author ของ commit เก่าอาจต่างกัน</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git configuration / ชุดงานที่ตรวจ</p></details></article><article class="card command-card" data-category="setup" data-keywords="alias hist st ci co br dump type"><div class="card-head"><h3>git config alias</h3><span class="tag">รับงานและตั้งค่า</span></div><p class="when">ตั้งคำสั่งย่อก่อนใช้ hist/st/ci</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git config --global alias.hist &quot;log --oneline --graph --decorate&quot;
+git config --global alias.st status</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>ปกติไม่มี output; git hist --all อ่านกราฟได้</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>เพิ่ม alias ใน global config; ไม่สร้าง commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git hist --all</pre></div><div class="note">hist ไม่ใช่ Git command ที่มีให้ทุกเครื่อง ใช้ log --oneline --graph --all แทนได้; assignment มี pretty format ยาวให้ดูในต้นฉบับ</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A02 Task 5</p></details></article><article class="card command-card" data-category="stage" data-keywords="ไฟล์ขึ้นสองครั้ง ซ้ำ MM XY untracked"><div class="card-head"><h3>git status -s</h3><span class="tag">Stage และ Commit</span></div><p class="when">อ่านสถานะแบบย่อและแยก staged กับ unstaged</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status -s</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>?? new.py
+ M hello.py
+M  staged.py
+MM edited-again.py</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>คอลัมน์ X เทียบ index กับ HEAD; Y เทียบ working tree กับ index</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git diff
+git diff --staged</pre></div><div class="note">MM หมายถึง staged แล้วแต่แก้เพิ่มอีก ไม่ใช่ Git สร้างไฟล์ซ้ำ</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git lecture / A02 Task 3</p></details></article><article class="card command-card" data-category="stage" data-keywords="เปรียบเทียบ unstaged ก่อน add"><div class="card-head"><h3>git diff</h3><span class="tag">Stage และ Commit</span></div><p class="when">ดูสิ่งที่แก้เพิ่มใน working tree ซึ่งยังไม่ staged</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git diff</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>บรรทัด - คือเดิม; + คือเพิ่ม
+ส่วนนี้ยังไม่เข้า commit ถัดไป</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>เทียบ working tree ของ tracked files กับ index; ไม่สร้าง commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status</pre></div><div class="note">ไฟล์ untracked ไม่แสดงเนื้อหาใน git diff ปกติ; diff ว่างไม่ได้แปลว่าไม่มี staged changes</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A03 Task 7</p></details></article><article class="card command-card" data-category="stage" data-keywords="cached index หลัง add จะ commit อะไร"><div class="card-head"><h3>git diff --staged</h3><span class="tag">Stage และ Commit</span></div><p class="when">ดู snapshot ที่ commit ถัดไปจะบันทึก</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git diff --staged</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>diff ของ index เทียบ HEAD
+ถ้า add default แล้วแก้ comment: ยังไม่เห็น comment</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่าน staged changes; --cached ใช้แทน --staged ได้</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status</pre></div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git lecture / A02 Task 3</p></details></article><article class="card command-card" data-category="stage" data-keywords="ทั้งหมด ทุกไฟล์ deletion stage"><div class="card-head"><h3>git add . / git add -A</h3><span class="tag">Stage และ Commit</span></div><p class="when">stage changes หลายไฟล์เมื่อโจทย์ต้องการรวม</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git add .
+git status</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Changes to be committed: รายการที่ stage ทั้งหมดใต้ current directory</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>add . เก็บ changes ใต้ current directory; add -A แบบไม่ระบุ path เก็บทั้ง working tree</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git diff --staged --stat</pre></div><div class="note">อย่า add ซ้ำหลังแก้เพิ่ม หากโจทย์กำลังทดสอบให้แยก staged กับ unstaged แบบ A02 Task 3</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A02 Task 3</p></details></article><article class="card command-card" data-category="stage" data-keywords="force ignore ถูกละเว้น"><div class="card-head"><h3>git add -f FILE</h3><span class="tag">Stage และ Commit</span></div><p class="when">เมื่อโจทย์ต้องการ track ไฟล์ที่ ignore rule กำลังข้าม</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git add -f lib/greeter.py</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>ไฟล์ปรากฏใน Changes to be committed</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>ข้าม ignore rules เพื่อ stage ไฟล์; ไม่สร้าง commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+git check-ignore -v lib/greeter.py</pre></div><div class="note">.gitignore ที่พบใน A03 ของคุณไม่มีกฎ ignore lib; -f ไม่จำเป็นทุกกรณี ส่วนไฟล์ที่ tracked แล้วยังติดตามแม้ตรง ignore rule</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A03 Task 3</p></details></article><article class="card command-card" data-category="stage" data-keywords="ignore ไม่ขึ้นไฟล์ tracked"><div class="card-head"><h3>git check-ignore / ls-files</h3><span class="tag">Stage และ Commit</span></div><p class="when">ตรวจว่าไฟล์ถูก ignore หรือถูก track แล้วหรือไม่</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git check-ignore -v lib/greeter.py
+git ls-files -- lib/greeter.py</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>check-ignore แสดง rule ที่ตรงถ้าไฟล์ถูก ignore
+ls-files แสดง path ถ้า tracked</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่าน ignore rule และ index; ถ้าไม่พบ check-ignore อาจไม่มี output และ exit 1</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status</pre></div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: คำสั่งช่วยวินิจฉัย A03 Task 3</p></details></article><article class="card command-card" data-category="stage" data-keywords="ลบ delete deletion"><div class="card-head"><h3>git rm FILE</h3><span class="tag">Stage และ Commit</span></div><p class="when">ลบ tracked file และเตรียมบันทึก deletion</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git rm old.py</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Changes to be committed:
+  deleted: old.py</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>ลบไฟล์ใน working tree และ stage deletion; ยังต้อง commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git diff --staged --stat</pre></div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git lecture</p></details></article><article class="card command-card" data-category="stage" data-keywords="untrack cached เก็บไฟล์"><div class="card-head"><h3>git rm --cached FILE</h3><span class="tag">Stage และ Commit</span></div><p class="when">เลิก track ไฟล์โดยเก็บสำเนาบนเครื่อง</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git rm --cached generated.txt</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>deleted: generated.txt ใน staging
+working file ยังอยู่</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>เอาไฟล์ออกจาก index; commit ถัดไปจะไม่ track ไฟล์นี้</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+ls generated.txt</pre></div><div class="note">ถ้าต้องการข้ามครั้งต่อไป เพิ่ม rule ใน .gitignore ตามโจทย์; อย่าใช้กับไฟล์ที่โจทย์ต้องการส่ง</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git reference / เสริมการเข้าใจ ignore</p></details></article><article class="card command-card" data-category="history" data-keywords="ประวัติ history hash commit"><div class="card-head"><h3>git log --oneline</h3><span class="tag">อ่านประวัติ</span></div><p class="when">ดู commit messages และหา hash ของตัวเอง</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log --oneline</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>HASH4 Add comment
+HASH3 Add a default value
+HASH2 Use argv
+HASH1 Initial commit</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่านประวัติ reachable จาก HEAD ปัจจุบัน; ไม่รวมทุก branch เสมอ</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log --oneline --all</pre></div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A02 Task 4</p></details></article><article class="card command-card" data-category="history" data-keywords="กราฟ tree ทุก branch"><div class="card-head"><h3>git log --graph --all</h3><span class="tag">อ่านประวัติ</span></div><p class="when">ดู main/greet/HEAD และความสัมพันธ์ของ commits</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log --oneline --graph --decorate --all</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>กราฟแสดง main, greet, HEAD และ tags
+--all อาจรวม remote refs ด้วย</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่านกราฟ refs ทั้งหมด; ไม่สร้าง commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git branch</pre></div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A03 Task 4–13</p></details></article><article class="card command-card" data-category="history" data-keywords="ลำดับ เก่าไปใหม่ message"><div class="card-head"><h3>git log --reverse</h3><span class="tag">อ่านประวัติ</span></div><p class="when">ตรวจลำดับ task ตั้งแต่ commit แรก</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log --oneline --reverse</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Initial commit → Use argv → Add a default value → Add comment</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>แสดง commits เก่าไปใหม่แทนใหม่ไปเก่า</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log -1 --oneline</pre></div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git lecture / A02 history</p></details></article><article class="card command-card" data-category="history" data-keywords="ดู commit changes SHA"><div class="card-head"><h3>git show HASH</h3><span class="tag">อ่านประวัติ</span></div><p class="when">ตรวจ commit เป้าหมายก่อน checkout/reset</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git show HASH_FROM_YOUR_LOG</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>commit metadata + message + diff ของ commit เป้าหมาย</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่านรายละเอียด commit; ไม่เปลี่ยน HEAD หรือไฟล์</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log --oneline</pre></div><div class="note">hash ใน assignment เป็นตัวอย่าง ไม่จำเป็นต้องตรง hash ของคุณ</div><p class="context">อยู่ที่: repo ที่มี hash นี้; แทน HASH ด้วยค่าจาก log<br>อ้างอิง: Git lecture / A03 Task 10–11</p></details></article><article class="card command-card" data-category="history" data-keywords="เวอร์ชันเก่า เนื้อหา blob"><div class="card-head"><h3>git show HASH:PATH</h3><span class="tag">อ่านประวัติ</span></div><p class="when">อ่านไฟล์เวอร์ชันเก่าโดยไม่เปลี่ยน branch</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git show HEAD:lib/hello.py</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>เนื้อหา lib/hello.py ที่ commit HEAD</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่าน blob ณ commit; working tree ไม่เปลี่ยน</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status</pre></div><div class="note">path ต้องตรงตำแหน่งไฟล์ ณ commit นั้น เช่นก่อน move อาจเป็น hello.py ไม่ใช่ lib/hello.py</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git reference / ดู snapshot</p></details></article><article class="card command-card" data-category="history" data-keywords="จำนวน count checkpoint"><div class="card-head"><h3>git rev-list --count</h3><span class="tag">อ่านประวัติ</span></div><p class="when">ตรวจ unique commits ของ local main/greet ตาม checkpoint</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git rev-list --count main greet</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>หลัง A03 Task 13: 10</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>นับ union ของ commits reachable จาก main/greet ไม่ double-count ancestor ที่แชร์กัน</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log --oneline --graph main greet</pre></div><div class="note">อย่านับ repo A03 ส่งงานแทน hello; --all อาจรวม refs/tags ของระบบส่งงาน</div><p class="context">อยู่ที่: hello หลังมี main/greet แล้ว<br>อ้างอิง: A03 checkpoints</p></details></article><article class="card command-card" data-category="tag" data-keywords="เวอร์ชัน version release"><div class="card-head"><h3>git tag v1</h3><span class="tag">Tag และเวอร์ชัน</span></div><p class="when">ตั้งชื่อให้เวอร์ชันปัจจุบัน</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git tag v1
+git tag</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>v1</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>สร้าง lightweight tag ชี้ HEAD; ไม่เพิ่ม commit และไม่เลื่อนตาม branch</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log --oneline --decorate --all</pre></div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A02 Task 7</p></details></article><article class="card command-card" data-category="tag" data-keywords="ย้อนหลัง tag parent beta"><div class="card-head"><h3>git tag NAME HASH</h3><span class="tag">Tag และเวอร์ชัน</span></div><p class="when">ตั้ง tag ให้ commit เก่าโดยไม่ต้อง checkout ก่อน</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git tag v1-beta HASH_FROM_YOUR_LOG</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>v1-beta ชี้ commit Add a default value</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>เพิ่ม ref tag ที่ commit เป้าหมาย; ไม่เปลี่ยน current branch</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git show v1-beta</pre></div><div class="note">แทน HASH ด้วย hash ของ Add a default value; assignment ใช้ checkout v1^ แล้ว tag ซึ่งให้ผลเดียวกันในประวัติชุดนี้</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A02 Task 7 / Git lecture</p></details></article><article class="card command-card" data-category="tag" data-keywords="detached ย้อนดู เวอร์ชันเก่า checkout"><div class="card-head"><h3>git checkout HASH / TAG</h3><span class="tag">Tag และเวอร์ชัน</span></div><p class="when">ย้อนดูเวอร์ชันเก่าชั่วคราว</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git checkout v1-beta
+cat hello.py</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>detached HEAD
+hello.py ตรง snapshot ของ v1-beta</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>HEAD ชี้ commit โดยตรง; main ไม่เลื่อนย้อนกลับ; tracked files เปลี่ยน</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+git switch main</pre></div><div class="note">commit ที่ทำขณะ detached ไม่ถูกลบทันทีเมื่อ switch แต่ควรสร้าง branch เพื่อเก็บอ้างอิงถ้าจะรักษางาน</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A02 Task 6–7</p></details></article><article class="card command-card" data-category="tag" data-keywords="parent ancestor caret tilde"><div class="card-head"><h3>HEAD^ / HEAD~ / ^2</h3><span class="tag">Tag และเวอร์ชัน</span></div><p class="when">เลือก parent หรือ ancestor ตามกราฟ</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git show HEAD~2
+git show HEAD^2</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>HEAD~2: first-parent ย้อนสองครั้ง
+HEAD^2: parent ตัวที่สองของ merge commit</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>เป็น syntax อ้างอิง commit ไม่ใช่ action เปลี่ยนไฟล์; show อ่านเท่านั้น</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log --oneline --graph --all</pre></div><div class="note">^2 ไม่ใช่ “สอง commit ก่อนหน้า”; HEAD^2 ใช้ได้เมื่อ commit มี second parent</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A02 Task 7 / Git revisions</p></details></article><article class="card command-card" data-category="branch" data-keywords="สร้าง branch ref pointer"><div class="card-head"><h3>git branch NAME</h3><span class="tag">Branch และ Merge</span></div><p class="when">สร้าง branch ใหม่ที่ HEAD โดยยังอยู่ branch เดิม</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git branch greet
+git branch</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>  greet
+* main</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>เพิ่ม ref greet; ไม่ copy folder และไม่เพิ่ม commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git branch --show-current</pre></div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A03 Task 3</p></details></article><article class="card command-card" data-category="branch" data-keywords="checkout -b สร้างและเปลี่ยน"><div class="card-head"><h3>git switch -c NAME</h3><span class="tag">Branch และ Merge</span></div><p class="when">สร้าง branch แล้วเริ่มทำงานบน branch นั้น</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch -c greet</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Switched to a new branch &#x27;greet&#x27;</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>สร้าง greet ที่ HEAD แล้วเปลี่ยน HEAD ให้ชี้ greet; ไม่เพิ่ม commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git branch</pre></div><div class="note">ใช้แทน git checkout -b greet หรือ branch + switch ได้; branch ต้องยังไม่มีอยู่</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A03 Task 3</p></details></article><article class="card command-card" data-category="branch" data-keywords="สลับ branch checkout"><div class="card-head"><h3>git switch NAME</h3><span class="tag">Branch และ Merge</span></div><p class="when">กลับ main หรือสลับดูไฟล์บน greet</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch main</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Switched to branch &#x27;main&#x27;
+tracked files ตรง snapshot ของ main</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>เปลี่ยน branch และ tracked files; ไม่สร้าง commit; changes ที่ไม่ขัดอาจย้ายตามได้</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git branch --show-current
+git status</pre></div><div class="note">Git ไม่ได้ห้าม switch ทุกครั้งที่มี changes แต่ห้ามเมื่อจะ overwrite/conflict; ก่อน switch อ่าน status เสมอ</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A03 Task 4–5</p></details></article><article class="card command-card" data-category="branch" data-keywords="อยู่ branch ไหน HEAD"><div class="card-head"><h3>git branch / --show-current</h3><span class="tag">Branch และ Merge</span></div><p class="when">ตรวจ branch ปัจจุบันก่อน commit, merge, reset</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git branch
+git branch --show-current</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>* greet
+  main
+greet</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่าน refs; * คือ branch ปัจจุบัน; detached อาจไม่มี current branch name</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status</pre></div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A03 Task 4</p></details></article><article class="card command-card" data-category="branch" data-keywords="รวม merge ทิศทาง destination source"><div class="card-head"><h3>git merge SOURCE</h3><span class="tag">Branch และ Merge</span></div><p class="when">รวมงาน SOURCE เข้า branch ที่กำลังอยู่</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch greet
+git merge main</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Fast-forward หรือ Merge made by ...
+ถ้า conflict: Automatic merge failed</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>รวม main เข้า greet; main ไม่เลื่อนตาม greet; divergent merge ปกติสร้าง merge commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+git log --oneline --graph --all</pre></div><div class="note">ทิศทางสำคัญ: switch ไปปลายทางก่อน merge ต้นทาง; output ขึ้นกับกราฟ</div><p class="context">อยู่ที่: hello; destination คือ greet<br>อ้างอิง: A03 Task 6 / Task 8</p></details></article><article class="card command-card" data-category="branch" data-keywords="conflict HEAD incoming markers แก้ขัดแย้ง"><div class="card-head"><h3>Resolve merge conflict</h3><span class="tag">Branch และ Merge</span></div><p class="when">หลัง merge มี both modified / unmerged paths</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+# แก้ไฟล์และลบ conflict markers ตามโจทย์
+git add lib/hello.py
+git commit -m &quot;Merge main, fix conflict&quot;</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>ไม่มี unmerged paths
+มี merge commit และโค้ดรวมพฤติกรรมที่ต้องการ</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>แก้ working file; add ยืนยัน resolution; commit จบ merge</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+git log --oneline --graph --all</pre></div><div class="note">A03 ต้องใช้ input จาก main ร่วมกับ Greeter จาก greet; Accept Current/Incoming อย่างเดียวอาจไม่ครบ</div><p class="context">อยู่ที่: hello บน greet ที่ merge ค้าง<br>อ้างอิง: A03 Task 8–9</p></details></article><article class="card command-card" data-category="branch" data-keywords="ยกเลิก abort merge"><div class="card-head"><h3>git merge --abort</h3><span class="tag">Branch และ Merge</span></div><p class="when">เลือกยกเลิก merge ที่ยังค้าง ไม่ทำ resolution ต่อ</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git merge --abort</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>กลับสถานะก่อนเริ่ม merge เมื่อ Git คืนสถานะได้</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>ยกเลิก ongoing merge; ไม่ใช่สร้าง merge commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status</pre></div><div class="note">ถ้ามี changes ค้างก่อน merge การกู้กลับอาจไม่ครบ; ใช้เมื่อตั้งใจยกเลิก ไม่ใช้เป็นขั้นจบโจทย์ conflict</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A03 Task 8 / Git merge</p></details></article><article class="card command-card" data-category="branch" data-keywords="ff ไม่มี commit เพิ่ม linear"><div class="card-head"><h3>Fast-forward merge</h3><span class="tag">Branch และ Merge</span></div><p class="when">หลัง rebase แล้ว main เป็น ancestor ของ greet</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch main
+git merge greet</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Fast-forward
+main และ greet ชี้ commit ปลายเดียวกัน</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>เลื่อน main ไป greet โดยไม่สร้าง merge commit ใหม่</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log --oneline --graph main greet
+git rev-list --count main greet</pre></div><div class="note">A03 Task 13 ต้องยังมี 10 commits; อย่าเพิ่ม --no-ff ถ้าโจทย์คาด FF</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A03 Task 13</p></details></article><article class="card command-card" data-category="branch" data-keywords="ลบ branch delete"><div class="card-head"><h3>git branch -d NAME</h3><span class="tag">Branch และ Merge</span></div><p class="when">ลบ local branch ที่รวมแล้ว เมื่อโจทย์อนุญาต</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git branch -d finished-feature</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Deleted branch finished-feature (...)</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>ลบ ref local branch ไม่ลบ remote branch และไม่เพิ่ม commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git branch</pre></div><div class="note">อย่าลบ greet ของ A03 หาก checkpoint ยังต้องมีสอง branches</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git Branch lecture</p></details></article><article class="card command-card" data-category="undo" data-keywords="unstage ยกเลิก add คืน stage"><div class="card-head"><h3>git restore --staged</h3><span class="tag">Reset และ Rebase</span></div><p class="when">ยกเลิก stage โดยเก็บไฟล์ที่แก้ไว้</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git restore --staged hello.py</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Changes not staged for commit:
+  modified: hello.py</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>คืน index ของไฟล์จาก HEAD; working file คงเดิม; branch ไม่ย้าย</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+git diff</pre></div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git lecture</p></details></article><article class="card command-card" data-category="undo" data-keywords="ทิ้ง changes ย้อนแก้ discard"><div class="card-head"><h3>git restore FILE</h3><span class="tag">Reset และ Rebase</span></div><p class="when">ทิ้ง unstaged change ของ tracked file</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git restore hello.py</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>working file กลับตรง index; unstaged diff ของไฟล์หาย</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>คืน working tree จาก index โดย default; ไม่ย้าย branch และไม่สร้าง commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git diff
+git status</pre></div><div class="note">สิ่งที่แก้แต่ไม่เคยบันทึกอาจหาย; ไม่ใช่ unstage</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git lecture / git-restore docs</p></details></article><article class="card command-card" data-category="undo" data-keywords="คืนไฟล์เก่า source restore hash"><div class="card-head"><h3>git restore --source</h3><span class="tag">Reset และ Rebase</span></div><p class="when">นำไฟล์เก่ากลับมาโดยไม่ย้อนทั้ง branch</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git restore --source=HASH_FROM_YOUR_LOG hello.py</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>working file ตรงกับ commit ที่ระบุ
+ถ้าต่างจาก index จะมี unstaged change</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>เปลี่ยนเฉพาะไฟล์ใน working tree; HEAD/index ปกติไม่เปลี่ยน</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git diff
+git status</pre></div><div class="note">แทน HASH จริง ถ้าจะบันทึกเวอร์ชันที่นำกลับต้อง add และ commit</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git lecture</p></details></article><article class="card command-card" data-category="undo" data-keywords="reset ย้อน branch hard ลบ changes"><div class="card-head"><h3>git reset --hard HASH</h3><span class="tag">Reset และ Rebase</span></div><p class="when">เมื่อโจทย์สั่งย้อน current branch และไฟล์ไป snapshot เป้าหมาย</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+git show HASH_FROM_YOUR_LOG
+git reset --hard HASH_FROM_YOUR_LOG</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>HEAD is now at ... MESSAGE
+current branch/index/tracked files ตรง target</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>เลื่อน current branch; แทน index/working tree; ไม่สร้าง commit ใหม่</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log --oneline --graph --all
+git status</pre></div><div class="note">แทน HASH ของตัวเองและตรวจ branch ก่อน; tracked changes ที่ไม่ commit จะถูกทิ้ง และ untracked ที่ขวาง path อาจถูกกระทบ</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A03 Task 10–11</p></details></article><article class="card command-card" data-category="undo" data-keywords="soft mixed เปรียบเทียบ reset"><div class="card-head"><h3>git reset --soft / --mixed</h3><span class="tag">Reset และ Rebase</span></div><p class="when">แยกว่าการย้อน branch จะเก็บ index/ไฟล์ไว้แบบใด</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git reset --soft HASH_FROM_YOUR_LOG
+# หรือเลือก --mixed แทน --soft ตามเป้าหมาย</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>soft: branch ย้าย; index/working tree คงเดิม
+mixed: branch ย้าย; index ตรง target; working tree คงเดิม</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>reset mode กำหนดส่วนที่คืน; คำสั่งนี้ไม่เพิ่ม commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+git diff --staged</pre></div><div class="note">เป็นคำอธิบายเทียบ hard; ไม่จำเป็นต้องรันทุก mode ต่อกันในข้อสอบ</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: git-reset docs / เสริมความเข้าใจ</p></details></article><article class="card command-card" data-category="undo" data-keywords="rebase linear replay ฐาน"><div class="card-head"><h3>git rebase main</h3><span class="tag">Reset และ Rebase</span></div><p class="when">ย้ายฐานงาน greet ให้ต่อจาก main หลัง reset ตาม A03</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch greet
+git rebase main</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>Successfully rebased and updated refs/heads/greet.
+สอง commits ของ greet ปกติได้ hash ใหม่</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>replay commits บน main; main ยังไม่ย้าย; ไม่สร้าง merge commit แบบ merge</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log --oneline --graph main greet
+git rev-list --count main greet</pre></div><div class="note">A03 ยอด reachable ยัง 10 แม้ commit objects ของงาน replay เป็น hash ใหม่</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: A03 Task 12</p></details></article><article class="card command-card" data-category="undo" data-keywords="rebase conflict continue abort"><div class="card-head"><h3>git rebase --continue / --abort</h3><span class="tag">Reset และ Rebase</span></div><p class="when">เมื่อ rebase หยุดเพราะ conflict หรือเลือกยกเลิก</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git add FILE_YOU_RESOLVED
+git rebase --continue
+# ถ้าเลือกยกเลิกแทน: git rebase --abort</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>continue: replay ต่อจนเสร็จ
+abort: กลับก่อนเริ่ม rebase</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>resolve แล้ว continue; rebase workflow ต่างจาก merge ที่ใช้ commit จบ</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status</pre></div><div class="note">แทนชื่อไฟล์จริง; comment abort เป็นทางเลือก ไม่ใช่ขั้นที่ต้องรันต่อหลัง continue</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: git-rebase docs</p></details></article><article class="card command-card" data-category="undo" data-keywords="กู้ recover lost hash"><div class="card-head"><h3>git reflog</h3><span class="tag">Reset และ Rebase</span></div><p class="when">หา hash ของ commit ก่อน reset หรือเมื่อหลุด detached</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git reflog</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>HEAD@{...}: reset / checkout / commit พร้อม hash</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่านบันทึกการเคลื่อน HEAD/refs ใน local; ไม่สร้าง commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git show HASH_FROM_REFLOG</pre></div><div class="note">ช่วยหา commit เก่าที่เคยบันทึก ไม่รับประกันกู้ข้อความที่ไม่เคย commit; อย่าสร้าง backup branch ในโจทย์นับ branches โดยไม่จำเป็น</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git reference / ช่วยวินิจฉัย</p></details></article><article class="card command-card" data-category="submit" data-keywords="แตก unzip archive history"><div class="card-head"><h3>unzip -l / unzip</h3><span class="tag">ZIP และส่งงาน</span></div><p class="when">เริ่ม A03 จาก hello.zip ของ A02 และรักษาประวัติ</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>unzip -l hello.zip
+unzip hello.zip
+cd hello</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>รายการมี hello/.git/
+หลังแตก git log มี 4 commits เดิม</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>แตก archive ตาม directory ภายใน; ไม่สร้าง student commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>ls -a
+git log --oneline</pre></div><div class="note">อย่าแตกทับ repo ที่กำลังทำงาน; ZIP มี hello/ อยู่แล้วจึงไม่แตกจากใน hello</div><p class="context">อยู่ที่: parent workspace นอก A03; แตกเมื่อยังไม่มี hello ที่ต้องเก็บ<br>อ้างอิง: A03 Task 2</p></details></article><article class="card command-card" data-category="submit" data-keywords="บีบอัด zip ประวัติ .git"><div class="card-head"><h3>zip -r ARCHIVE DIRECTORY</h3><span class="tag">ZIP และส่งงาน</span></div><p class="when">บีบอัดทั้ง repo hello สำหรับส่งประวัติ</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>zip -r hello2.zip hello
+unzip -l hello2.zip</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>ZIP มี hello/ รวม hello/.git/, source files และ refs</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>บีบอัด directory ทั้งก้อน; ไม่ stage/commit; ไม่อัปเดตตาม hello ภายหลัง</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>unzip -l hello2.zip</pre></div><div class="note">สร้าง archive ใหม่ถ้ามีไฟล์เดิมเพื่อไม่เหลือ stale entries; อย่าใช้ hello/* เพราะอาจไม่รวม .git; .gitignore ไม่สั่ง zip ให้ข้ามไฟล์</div><p class="context">อยู่ที่: parent directory ที่มี hello ไม่ใช่ภายใน hello<br>อ้างอิง: A02 Task 8 / A03 Task 14</p></details></article><article class="card command-card" data-category="submit" data-keywords="7zip compress"><div class="card-head"><h3>7z a ARCHIVE DIRECTORY</h3><span class="tag">ZIP และส่งงาน</span></div><p class="when">ทางเลือกแทน zip เมื่อเครื่องมี 7-Zip</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>7z a hello2.zip hello</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>archive hello2.zip มี directory hello และ .git</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>สร้าง/อัปเดต archive ด้วย 7-Zip; ไม่สร้าง Git commit</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>unzip -l hello2.zip</pre></div><div class="note">ใช้ zip หรือ 7z อย่างหนึ่ง ไม่ต้องรันทั้งคู่; ถ้ามี archive เก่าให้จัดการก่อนสร้างใหม่</div><p class="context">อยู่ที่: parent workspace<br>อ้างอิง: A03 Task 14</p></details></article><article class="card command-card" data-category="submit" data-keywords="ส่ง zip copy repo assignment"><div class="card-head"><h3>ส่ง ZIP เข้า repo assignment</h3><span class="tag">ZIP และส่งงาน</span></div><p class="when">หลังตรวจ ZIP แล้ว บันทึกไฟล์นี้ใน A03</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>cp hello2.zip A03/
+cd A03
+git add hello2.zip
+git commit -m &quot;Complete Task 14&quot;</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>commit Complete Task 14 ใน A03
+hello history ยังอยู่ใน ZIP</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>copy ไม่สร้าง commit; cd ให้ถูก repo แล้ว add/commit ไฟล์ archive</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+git log -2 --oneline</pre></div><div class="note">A02 ใช้ hello.zip และ Complete Task 8; อย่า commit ZIP ใน hello แทน A03</div><p class="context">อยู่ที่: เริ่มจาก parent workspace<br>อ้างอิง: A02 Task 8 / A03 Task 14</p></details></article><article class="card command-card" data-category="submit" data-keywords="URL github origin remote"><div class="card-head"><h3>git remote -v</h3><span class="tag">ZIP และส่งงาน</span></div><p class="when">ตรวจว่าจะ clone/push ไป repo ไหน</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git remote -v</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>origin URL (fetch)
+origin URL (push)</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่าน remote endpoints; origin เป็นชื่อ remote ไม่ใช่ branch</p><span class="label">ตรวจด้วย</span><p>เทียบ URL กับ repo assignment ของคุณ</p><div class="note">github-tu เป็น SSH alias เฉพาะเครื่อง ถ้าไม่มี alias ให้ใช้ URL/protocol ที่ตั้งบัญชีถูก</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: ชุดงาน local / Git lecture</p></details></article><article class="card command-card" data-category="submit" data-keywords="อัปโหลด submit ส่งงาน"><div class="card-head"><h3>git push origin main</h3><span class="tag">ZIP และส่งงาน</span></div><p class="when">หลัง commit งานใน repo assignment แล้ว ส่งขึ้น GitHub</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git push origin main</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>main -&gt; main หรือ Everything up-to-date
+หน้า GitHub ต้องมี commit/ZIP ล่าสุด</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>ส่ง objects/อัปเดต remote main; ไม่สร้าง local commit และไม่ส่ง uncommitted files</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+git log -1 --oneline</pre></div><div class="note">push สำเร็จไม่ยืนยันคะแนน; ตรวจ Actions/feedback ของระบบอีกครั้ง; hello ในงานส่งผ่าน ZIP ไม่มี remote</div><p class="context">อยู่ที่: repo assignment A01/A02/A03<br>อ้างอิง: workflow A00–A03</p></details></article><article class="card command-card" data-category="submit" data-keywords="classroom submit autograde feedback"><div class="card-head"><h3>gh student submit</h3><span class="tag">ZIP และส่งงาน</span></div><p class="when">เมื่ออาจารย์กำหนดให้ส่งด้วยเครื่องมือ Classroom50</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>gh student submit</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>เครื่องมือ snapshot และ push ไป default branch
+อาจเพิ่ม Submit commit และ refresh template files</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>ตาม help เครื่องมือนี้ไม่ใช่ git push เฉย ๆ; อาจเปลี่ยน history</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log -3 --oneline
+git status</pre></div><div class="note">ถ้าโจทย์กำหนด commit count ให้ดูวิธีส่งที่กำหนดก่อน ไม่เรียกเพิ่มหลัง push โดยถือว่าไม่มีผล</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Classroom50 installed CLI help</p></details></article><article class="card command-card" data-category="submit" data-keywords="fetch pull รับอัปเดต rejected upstream"><div class="card-head"><h3>git fetch / pull</h3><span class="tag">ZIP และส่งงาน</span></div><p class="when">เมื่อ remote มีงานเพิ่มและต้องพิจารณารวมเข้าฝั่ง local</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git fetch origin
+git log --oneline --graph --all</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>origin/main อัปเดต; local main ยังไม่รวมเองจาก fetch</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>fetch รับ objects/remote-tracking refs; pull = fetch แล้ว integrate ตาม config/options</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status</pre></div><div class="note">pull อาจ merge หรือ rebase และเปลี่ยน history; อย่ารันอัตโนมัติเมื่อ counts กำหนด; A04 ใช้ upstream เพิ่มเติม</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git concepts / A04 supplement</p></details></article><article class="card command-card" data-category="submit" data-keywords="tags push version"><div class="card-head"><h3>git push TAG / --tags</h3><span class="tag">ZIP และส่งงาน</span></div><p class="when">ส่ง tags เมื่อโจทย์กำหนดให้ remote มีเวอร์ชันนั้น</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git push origin v1 v1-beta
+# ทุก tags เมื่อโจทย์ต้องการ: git push origin --tags</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>tags v1 / v1-beta ปรากฏที่ remote</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>ส่ง tags ที่ระบุ; push main ปกติไม่ส่งทุก tag</p><span class="label">ตรวจด้วย</span><p>เปิดรายการ tags ของ repo remote</p><div class="note">hello ใน A02 ส่ง tags อยู่ใน .git ผ่าน ZIP ไม่ต้องตั้ง remote เพิ่มเอง</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git tags / เสริมการส่งงาน</p></details></article><article class="card command-card" data-category="objects" data-keywords="object blob tree commit tag plumbing type dump"><div class="card-head"><h3>git cat-file -t / -p</h3><span class="tag">Git objects</span></div><p class="when">อ่านโครงสร้าง Git object ตามสไลด์ Git Branch</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git cat-file -t HEAD
+git cat-file -p HEAD</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>commit
+tree HASH
+parent HASH (ถ้ามี)
+author ...
+committer ...
+commit message</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>-t ดู type; -p ดู object contents; ไม่เปลี่ยน repo</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log -1 --oneline</pre></div><div class="note">branch เป็น ref ชี้ commit ไม่ใช่ object type เพิ่ม; lightweight tag กับ annotated tag แตกต่างกัน</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git Branch lecture / A02 aliases</p></details></article><article class="card command-card" data-category="setup" data-keywords="help Vim editor save exit"><div class="card-head"><h3>git help / editor</h3><span class="tag">รับงานและตั้งค่า</span></div><p class="when">เมื่อจำ option ไม่ได้ หรือ merge เปิด editor แล้วไม่รู้จะออกอย่างไร</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git merge -h
+git config --local core.editor &quot;code --wait&quot;</pre></div><div class="expected"><span class="label">ผลที่คาดหวัง</span><pre>help แสดง options; editor config ปกติไม่มี output</pre></div><details class="detail"><summary>Action · วิธีตรวจ · ข้อควรรู้</summary><span class="label">คำสั่งทำอะไร</span><p>อ่าน help; ตั้ง editor สำหรับ repo นี้เมื่อมี VS Code ใช้งานได้</p><span class="label">ตรวจด้วย</span><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git config --get core.editor</pre></div><div class="note">Vim: Esc แล้ว :wq Enter เพื่อบันทึก/ออก; VS Code ต้องติดตั้งคำสั่ง code; อย่า config ไปโปรแกรมที่ไม่มี</div><p class="context">อยู่ที่: repo ที่ต้องการทำงาน<br>อ้างอิง: Git lecture / A03 Task 6</p></details></article></div><p id="empty" class="empty" hidden>ไม่พบคำสั่ง ลองคำสั้นลง เช่น stage, branch, zip หรือเลือก “ทั้งหมด”</p></section><section id="assignments" class="view" hidden><h1>เดินตาม Assignment</h1><p class="intro">ดูว่าทำอะไร อยู่ repo ไหน ใช้คำสั่งใด และต้องได้ checkpoint แบบไหน</p><div class="assign-list"><button type="button" class="assign-button " data-assignment="a00" aria-pressed="false"><strong>A00</strong><small>ทดสอบ repo</small><small>ไม่มี task แยกในชุดนี้</small></button><button type="button" class="assign-button active" data-assignment="a01" aria-pressed="true"><strong>A01</strong><small>Markdown</small><small>AUTHORS + 21 Sections</small></button><button type="button" class="assign-button " data-assignment="a02" aria-pressed="false"><strong>A02</strong><small>Git: Part 1</small><small>staging, history, tags, ZIP</small></button><button type="button" class="assign-button " data-assignment="a03" aria-pressed="false"><strong>A03</strong><small>Git Branch</small><small>merge, conflict, reset, rebase</small></button><button type="button" class="assign-button " data-assignment="a04" aria-pressed="false"><strong>A04</strong><small>งานกลุ่มและ API</small><small>เนื้อหาเสริม · เกินขอบเขตสอบ</small></button></div><div class="note">ตัวอย่าง WORKSPACE_PATH, STUDENT_ID, YOUR_NAME และ HASH ต้องแทนด้วยค่าของคุณ ส่วน /d/working และ A03 ในต้นฉบับเป็นตัวอย่าง path/ชื่อ local ให้ใช้ตามโจทย์จริง</div><div class="assignment-panel" id="assignment-a00" hidden><div class="assignment-intro"><h2>A00 · ทดสอบ repo</h2><p>ไม่มี task แยกในชุดนี้</p></div><article class="panel task"><h3>A00 · ตรวจรับและทดลอง repo</h3><span class="tag">แนวทบทวน; ไม่มี task เชิงรายละเอียดในชุดนี้</span><p>นี่เป็น workflow ทบทวนจาก repo ทดสอบ ไม่ใช่คำสั่ง task ที่ยืนยันจาก A00</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git clone &quot;REPO_URL_FROM_ASSIGNMENT&quot; A00
+cd A00
+git remote -v
+git status
+# แก้ README.md ตามงานทดสอบที่ได้รับ
+git add README.md
+git commit -m &quot;MESSAGE_REQUIRED_BY_TASK&quot;
+git push origin main</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>repo/account ถูกต้อง; GitHub มี commit ล่าสุด</p></div><details class="detail"><summary>อ่านต้นฉบับ README.md</summary><pre class="source"># README
+
+A test repository.
+purich test</pre></details></article></div><div class="assignment-panel" id="assignment-a01" ><div class="assignment-intro"><h2>A01 · Markdown</h2><p>AUTHORS + 21 Sections</p></div><article class="panel task"><h3>Task 1 · ตั้ง identity และ AUTHORS</h3><span class="tag">A01 · branch ตามโจทย์</span><p>ชื่อจริงและรหัส@cn330 อยู่ใน AUTHORS และ metadata ของ commit; GitHub account เป็นคนละค่า</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git config --local user.name &quot;YOUR_NAME YOUR_SURNAME&quot;
+git config --local user.email &quot;STUDENT_ID@cn330&quot;
+# แก้ AUTHORS ตามส่วนทีมของคุณ
+git add AUTHORS
+git commit -m &quot;Complete Task 1&quot;</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>1 student commit: Complete Task 1</p></div><details class="detail"><summary>อ่านต้นฉบับ task1.md</summary><pre class="source"># Task 1
+
+1. Open Git Bash shell.
+
+2. Change into the directory that you have clone this repo to, e.g. `/d/working/A01`
+
+   ```console
+   cd /d/working/A01
+   ```
+
+3. Config your name and email **locally** for this repo. Replace `xxxxxxxxxx` with your Student ID.
+
+   ```console
+   git config user.name &quot;your_name your_surname&quot;
+   git config user.email &quot;xxxxxxxxxx@cn330&quot;
+   ```
+
+4. Edit the `AUTHORS` file.
+
+   - Add your information in appropriate section.
+   - Add the following information under your team name:
+
+     - your name and surname
+     - your (mock-up) email address, use format: &lt;xxxxxxxxxx@cn330&gt;
+
+5. Add and commit `AUTHORS` to repo.
+
+   ```bash
+   git add AUTHORS
+   git commit -m &quot;Complete Task 1&quot;
+   ```
+</pre></details></article><article class="panel task"><h3>Task 2 · Markdown ทีละ Section 1–21</h3><span class="tag">A01</span><p>commit sample.md ว่างก่อน จากนั้น commit ทีละ section; อย่าทำครบทุกส่วนแล้ว commit ครั้งเดียว</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>touch sample.md
+git add sample.md
+git commit -m &quot;Add sample.md&quot;
+# เติม Section 1 และทำ Markdown ให้ตรงโจทย์
+git add sample.md
+git status
+git commit -m &quot;Add Section 1&quot;
+# ทำแบบเดียวกันจนถึง Add Section 21</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>22 student commits ใน Task 2 · รวม Task 1 เป็น 23</p></div><details class="detail"><summary>อ่านต้นฉบับ task2.md</summary><pre class="source"># Task 2
+
+1. Create an empty markdown file and name it as **`sample.md`**.
+
+2. Add the file to the repo.
+
+3. Check status of the repo.
+
+4. Commit change with a message &quot;`Add sample.md`&quot;
+
+   ```console
+   git add sample.md
+   git status
+   git commit -m &quot;Add sample.md&quot;
+   ```
+
+5. Copy content in **Section 1** (text Section 1 and dashed-line) from the file **`initial_text.txt`** to the file **`sample.md`**.
+
+6. Apply Markdown syntax to the copied text in **`sample.md`** accordingly.
+   See possible [result from Section 1](result.html#section-1)
+
+7. Add change to the repo.
+
+8. Check status of the repo.
+
+9. Commit change with a message &quot;`Add Section 1`&quot;.
+
+   ```console
+   git add sample.md
+   git status
+   git commit -m &quot;Add Section 1&quot;
+   ```
+
+10. Repeat step 5. - 9. for all remaining sections in the file **`initial_text.txt`**. Change the commit message for each added section accordingly.
+</pre></details></article><h2>Markdown ที่ต้องใช้ใน 21 Sections</h2><div class="grid"><article class="card compact"><h3>Heading</h3><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre># Heading
+## Subheading</pre></div></article><article class="card compact"><h3>Italic / Bold</h3><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>_italic_
+**bold**
+***bold and italic***</pre></div></article><article class="card compact"><h3>Lists / Nested</h3><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>1. First
+   1. Nested
+2. Second
+
+- First
+  - Nested</pre></div></article><article class="card compact"><h3>Inline / Fenced code</h3><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>Use `git status`
+
+```python
+print(&quot;Hello&quot;)
+```</pre></div></article><article class="card compact"><h3>Links / Anchors</h3><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>[GitHub](https://github.com/)
+[Section 1](#section-1)
+&lt;https://github.com/&gt;</pre></div></article><article class="card compact"><h3>Reference links</h3><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>[GitHub][1]
+
+[1]: https://github.com/</pre></div></article><article class="card compact"><h3>Images / Image links</h3><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>![Oogway](images/oogway.jpg)
+[![ECE](image.jpg)](https://ece.engr.tu.ac.th/)</pre></div></article><article class="card compact"><h3>Escapes / HTML</h3><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>\*literal asterisks\*
+&lt;pre&gt;text&lt;/pre&gt;</pre></div></article></div><details class="panel detail"><summary>ตัวอย่าง sample.md ที่ทำไว้ ครบ 21 Sections</summary><pre class="source">## Section 1
+Headers
+
+# Heading level 1
+
+## Heading level 2
+
+### Heading level 3
+
+#### Heading level 4
+
+##### Heading level 5
+
+###### Heading level 6
+------------------------------
+
+## Section 2
+Italic
+
+_Sample italic text using underscores._
+------------------------------
+
+## Section 3
+Bold
+
+**Sample bold text using asterisks.**
+------------------------------
+
+## Section 4
+Bold and Italic
+
+***Sample bold and italic text using asterisks.***
+
+___Sample bold and itealic text using underscores.___
+------------------------------
+
+## Section 5
+Ordered Lists
+
+1. First item
+2. Second item
+3. Third item
+4. Fourth item
+------------------------------
+
+## Section 6
+Nested Ordered Lists
+
+1. First item
+   1. nested first item
+   2. nested second item
+   3. nested third item
+2. Second item
+3. Third item
+4. Fourth item
+------------------------------
+
+## Section 7
+Unordered Lists
+
+- First item
+- Second item
+- Third item
+- Fourth item
+------------------------------
+
+## Section 8
+Nested Unordered Lists
+
+- First item
+  - nested first item
+  - nested second item
+  - nested third item
+- Second item
+- Third item
+- Fourth item
+------------------------------
+
+## Section 9
+Mixed Nested Lists
+
+1. First ordered item
+   1. nested first ordered item
+   2. nested second ordered item
+   3. nested third ordered item
+2. Second ordered item
+3. Third ordered item
+   - nested first unordered item
+   - nested second unordered item
+   - nested third unordered item
+4. Fourth ordered item
+------------------------------
+
+## Section 10
+Inline code
+
+At command prompt, type: `code filename`
+------------------------------
+
+## Section 11
+Code Blocks
+
+Mark this html code
+
+    &lt;html&gt;
+      &lt;head&gt;
+        &lt;title&gt;Test&lt;/title&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+        &lt;h1&gt;Title&lt;/h1&gt;
+        &lt;p&gt;First paragraph&lt;/p&gt;
+        &lt;p&gt;Second paragraph&lt;/p&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+------------------------------
+
+## Section 12
+
+Code fencing
+
+Use code fencing to display the following python program:
+
+```python
+print(&#x27;I will display the numbers 1 through 5.&#x27;)
+for num in [1, 2, 3, 4, 5]:
+    print(num)
+```
+------------------------------
+
+## Section 13
+Links - External (inline)
+
+Some public source-code-hosting services
+
+[GitHub](https://github.com/)
+
+[Bitbucket](https://bitbucket.org/)
+------------------------------
+
+## Section 14
+Links - Headings
+
+See link to [Section 1](#section-1)
+See link to [Section 2](#section-2)
+See link to [Section 3](#section-3)
+------------------------------
+
+## Section 15
+URLs and Email Addresses
+
+Some public source-code-hosting services
+
+URLs
+
+&lt;https://github.com/&gt;
+
+&lt;https://bitbucket.org/&gt;
+
+Emails
+
+&lt;xxxxxxxxxx@cn330&gt;
+
+&lt;xxxxxxxxxx@github.com&gt;
+------------------------------
+
+## Section 16
+Links - References
+
+Some public source-code-hosting services
+
+An example reference =&gt; [GitHub][1]
+
+An example reference =&gt; [Bitbucket][2]
+
+[1]: https://github.com/
+[2]: https://bitbucket.org/
+------------------------------
+
+## Section 17
+Formatting Links
+
+Make link text bold =&gt; [**EFF**](https://eff.org).
+
+Make link text italic =&gt; [*Markdown Guide*](https://www.markdownguide.org).
+
+Make link text displayed as code =&gt; [`Section 10`](#section-10).
+------------------------------
+
+## Section 18
+Images
+
+Link to local image (images/oogway.jpg)
+
+![oogway](images/oogway.jpg)
+
+Link to external image (https://cdn2.siam.icu/file/ece/TSE-2.jpg)
+
+![TSE](https://cdn2.siam.icu/file/ece/TSE-2.jpg)
+------------------------------
+
+## Section 19
+Image Links
+
+Target url: https://ece.engr.tu.ac.th/
+
+Image url: https://cdn2.siam.icu/file/ece/TSE-2.jpg
+
+[![Click image to web ECE](https://cdn2.siam.icu/file/ece/TSE-2.jpg)](https://ece.engr.tu.ac.th/)
+------------------------------
+
+## Section 20
+Backslash Escapes
+
+Markdown allows you to use backslash escapes to generate literal
+characters which would otherwise have special meaning in Markdown’s
+formatting syntax.
+
+escape \\backslash\\
+
+escape \`backtick\`
+
+escape \*asterisks\*
+
+escape \_underscore\_
+
+escape \{curly braces\}
+
+escape \[brackets\]
+
+escape \&lt;angle brackets\&gt;
+
+escape \(parentheses\)
+
+escape \#hash\#
+
+escape \!exclamation mark\!
+
+escape \|pipe\|
+------------------------------
+
+## Section 21
+HTML
+
+Some Markdown applications support raw html.
+Best practices, if possible, try to avoid using raw HTML in Markdown.
+
+&lt;pre&gt;&quot;Put this string in an HTML pre tag&quot;&lt;/pre&gt;
+------------------------------
+</pre></details></div><div class="assignment-panel" id="assignment-a02" hidden><div class="assignment-intro"><h2>A02 · Git: Part 1</h2><p>staging, history, tags, ZIP</p></div><article class="panel task"><h3>Task 1 · ตั้ง identity และ AUTHORS</h3><span class="tag">A02</span><p>ยังไม่ได้สร้าง hello; นี่คือ repo สำหรับส่ง assignment</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git config --local user.name &quot;YOUR_NAME YOUR_SURNAME&quot;
+git config --local user.email &quot;STUDENT_ID@cn330&quot;
+# แก้ AUTHORS
+git add AUTHORS
+git commit -m &quot;Complete Task 1&quot;</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>1 student commit ใน A02</p></div><details class="detail"><summary>อ่านต้นฉบับ task1.md</summary><pre class="source"># Task 1
+
+## Setup
+
+1. Open Git Bash shell.
+
+2. Change into the directory that you have clone this repo to, e.g. **`/d/working/A02`**
+
+   **RUN:**
+
+   ```console
+   cd /d/working/A02
+   ```
+
+3. Config your name and email **locally** for this repo. Replace **`xxxxxxxxxx`** with your Student ID.
+
+   **RUN:**
+
+   ```console
+   git config user.name &quot;your_name your_surname&quot;
+   git config user.email &quot;xxxxxxxxxx@cn330&quot;
+   ```
+
+4. Edit the **`AUTHORS`** file.
+
+   - Add your information in appropriate section.
+   - Add the following information under your team name:
+
+     - your name and surname
+     - your (mock-up) email address, use format: &lt;xxxxxxxxxx@cn330&gt;
+
+5. Add and commit **`AUTHORS`** to repo.
+
+   **RUN:**
+
+   ```console
+   git add AUTHORS
+   git commit -m &quot;Complete Task 1&quot;
+   ```
+
+</pre></details></article><article class="panel task"><h3>Task 2 · สร้างโปรเจกต์และ repository hello</h3><span class="tag">parent workspace → hello</span><p>hello ต้องอยู่นอก A02; init ยังไม่เกิด commit; ตั้ง identity ใน repo ใหม่ด้วย</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>mkdir hello
+cd hello
+git init -b main
+git config --local user.name &quot;YOUR_NAME YOUR_SURNAME&quot;
+git config --local user.email &quot;STUDENT_ID@cn330&quot;
+# สร้าง hello.py ตามโจทย์
+git status
+git add hello.py
+git commit -m &quot;Initial commit&quot;</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>hello: 1 commit · main</p></div><details class="detail"><summary>อ่านต้นฉบับ task2.md</summary><pre class="source"># Task 2
+
+## Create a Project
+
+### Create a Python program
+
+1. Change into a directory (**outside this repository**), e.g. **`/d/working`**
+
+   **RUN:**
+
+   ```console
+   cd /d/working
+   ```
+
+2. Create an empty directory named **`hello`** and change into the directory.
+
+   **RUN:**
+
+   ```console
+   mkdir hello
+   cd hello
+   ```
+
+3. Create a file named **`hello.py`** with the contents below.
+
+   ```python
+   print(&quot;Hello, world&quot;)
+   ```
+
+### Create the repository
+
+1. Create a git repository by running the `git init` command.
+
+   **RUN:**
+
+   ```console
+   git init
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Initialized empty Git repository in /d/working/hello/.git/
+   ```
+
+### Check status before adding change
+
+1. Check status of the repository to see:
+
+   - any change in **staging area** (index) from git&#x27;s **history**
+   - any change in **working directory** (working tree) from **staging area** (index)
+
+   **RUN:**
+
+   ```console
+   git status
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch main
+
+   No commits yet
+
+   Untracked files:
+     (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+           hello.py
+
+   nothing added to commit but untracked files present (use &quot;git add&quot; to track)
+   ```
+
+### Add the program to the repository
+
+1. Add the &quot;Hello, World&quot; program to the repository.
+
+   **RUN:**
+
+   ```console
+   git add hello.py
+   ```
+
+### Check status after adding change
+
+1. After adding a file
+
+   - the contents in working directory is the **same** as in staging area (index)
+   - the contents in staging area (index) is now **different** from git&#x27;s history
+
+2. Check status of the repository.
+
+   **RUN:**
+
+   ```console
+   git status
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch main
+
+   No commits yet
+
+   Changes to be committed:
+     (use &quot;git rm --cached &lt;file&gt;...&quot; to unstage)
+           new file:   hello.py
+   ```
+
+### Make a commit
+
+1. Take a snapshot of all files or subdirectory in working directory.
+
+   **RUN:**
+
+   ```console
+   git commit -m &quot;Initial commit&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [main (root-commit) b6283f7e] Initial commit
+    1 file changed, 2 insertions(+)
+    create mode 100644 hello.py
+   ```
+
+### Check status after a commit
+
+1. Check status of the repository again.
+
+   **RUN:**
+
+   ```console
+   git status
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch main
+   nothing to commit, working tree clean
+   ```
+
+2. After a commit
+   - the contents in working directory is the **same** as in staging area (index)
+   - the contents in staging area (index) is the **same** as in git&#x27;s history
+
+#### Check Point: Task 2
+
+In repository **`/d/working/hello`**, there should be:
+
+- **1 new commit**
+- current total commits: **1**
+
+</pre></details></article><article class="panel task"><h3>Task 3 · argv → default → comment แยก commit</h3><span class="tag">hello · main</span><p>หลัง add default แล้วแก้ comment ไฟล์เดียวขึ้นสองกลุ่มใน status; commit แรกยังไม่เก็บ comment</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre> # แก้ hello.py ให้ใช้ sys.argv[1]
+git add hello.py
+git commit -m &quot;Use argv&quot;
+# แก้ให้มี default แล้ว stage
+git add hello.py
+# แก้เพิ่ม comment แต่ยังไม่ add รอบสอง
+git status
+git diff --staged
+git commit -m &quot;Add a default value&quot;
+git add hello.py
+git commit -m &quot;Add comment&quot;</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>+3 commits · hello รวม 4</p></div><details class="detail"><summary>อ่านต้นฉบับ task3.md</summary><pre class="source"># Task 3
+
+## Making Changes
+
+### Change the &quot;Hello, world&quot; program
+
+1. Modify the contents of **`hello.py`** to be:
+
+   ```python
+   import sys
+
+   print(&quot;Hello,&quot;, sys.argv[1])
+   ```
+
+### Check status after adding change
+
+1. Check status of the repository.
+
+   **RUN:**
+
+   ```console
+   git status
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch main
+   Changes not staged for commit:
+     (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+     (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+           modified:   hello.py
+   ```
+
+### Stage (add) and commit changes
+
+1. Stage the changes and check the status.
+
+   **RUN:**
+
+   ```console
+   git add hello.py
+   git status
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch main
+   Changes to be committed:
+     (use &quot;git restore --staged &lt;file&gt;...&quot; to unstage)
+           modified:   hello.py
+   ```
+
+2. Commit changes
+
+   **RUN:**
+
+   ```console
+   git commit -m &quot;Use argv&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [main 4854bd69] Use argv
+    1 file changed, 3 insertions(+), 1 deletion(-)
+   ```
+
+### Changes are tracked, not files
+
+Git focuses at the changes to a file rather than the file itself.
+
+When you run `git add file`
+
+- you are not telling git to add the file to the repository
+- you are saying that git should make note of the current state of that file to be committed later
+
+### More change: Default name
+
+1. Change the &quot;Hello, World&quot; program to have a default value if a command line argument is not supplied.
+
+   ```python
+   import sys
+
+   name = sys.argv[1] if len(sys.argv) &gt; 1 else &quot;world&quot;
+
+   print(&quot;Hello,&quot;, name)
+   ```
+
+2. Add this change.
+
+   **RUN:**
+
+   ```console
+   git add hello.py
+   ```
+
+### More change: Add comment
+
+1. Add a comment to the &quot;Hello, World&quot; program.
+
+   ```python
+   import sys
+   # Default is &quot;world&quot;
+   name = sys.argv[1] if len(sys.argv) &gt; 1 else &quot;world&quot;
+
+   print(&quot;Hello,&quot;, name)
+   ```
+
+2. Check current status.
+
+   **RUN:**
+
+   ```console
+   git status
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch main
+   Changes to be committed:
+     (use &quot;git restore --staged &lt;file&gt;...&quot; to unstage)
+           modified:   hello.py
+
+   Changes not staged for commit:
+     (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+     (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+           modified:   hello.py
+   ```
+
+   Notice how the file **`hello.py`** is **listed twice** in the status.
+
+   - first change (adding a default) is staged and is ready to be committed.
+   - second change (adding a comment) is unstaged.
+
+   If you were to commit right now, the comment would not be saved in the repository.
+
+### Commit current changes that are staged
+
+1. Commit the staged change (the default value).
+
+   **RUN:**
+
+   ```console
+   git commit -m &quot;Add a default value&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [main c81f6d93] Add a default value
+    1 file changed, 3 insertions(+), 1 deletion(-)
+   ```
+
+2. Check the status.
+
+   **RUN:**
+
+   ```console
+   git status
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch main
+   Changes not staged for commit:
+     (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+     (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+           modified:   hello.py
+   ```
+
+### Add the second change (Add comment)
+
+1. Add the second change to staging area (notice the `.` at the end of the command), then run git status.
+
+   **RUN:**
+
+   ```console
+   git add .
+   git status
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch main
+   Changes to be committed:
+     (use &quot;git restore --staged &lt;file&gt;...&quot; to unstage)
+           modified: hello.py
+   ```
+
+   **Note:** We used the current directory (`.`) as the file to add.
+
+   This is a convenient shortcut for adding all the changes to the files in the current directory and any subdirectory.
+
+   Since it adds everything, it is a really good idea to check the status before doing an **`add .`**, just to make sure you don’t add
+   any file that is not intended.
+
+### Commit the second change (Add comment)
+
+1. Make a commit.
+
+   **RUN:**
+
+   ```console
+   git commit -m &quot;Add comment&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [main 682c2694] Add comment
+    1 file changed, 1 insertion(+), 1 deletion(-)
+   ```
+
+#### Check Point: Task 3
+
+In repository **`/d/working/hello`**, there should be:
+
+- **3 new commits**
+- current total commits: **4**
+</pre></details></article><article class="panel task"><h3>Task 4 · อ่านประวัติและ pretty format</h3><span class="tag">hello · main</span><p>อ่าน hash, message, author, HEAD; output hash ของคุณไม่เหมือนตัวอย่าง</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log
+git log --oneline
+git log --pretty=oneline
+git log --oneline --reverse</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>+0 commits · รวม 4</p></div><details class="detail"><summary>อ่านต้นฉบับ task4.md</summary><pre class="source"># Task 4
+
+## History
+
+### Show history
+
+1. Check history of a repository using `git log`.
+
+   **RUN:**
+
+   ```console
+   git log
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   commit 682c26942c891f95775ce1c55fea3065ce15f182 (HEAD -&gt;  main)
+   Author: xxxxxxxxxx &lt;xxxxxxxxxx@cn330&gt;
+   Date:   Thu Aug 18 23:34:47 2024 +0700
+
+       Add comment
+
+   commit c81f6d937713abd979ebe9498a2ac670a272d0cb
+   Author: xxxxxxxxxx &lt;xxxxxxxxxx@cn330&gt;
+   Date:   Thu Aug 18 23:16:30 2024 +0700
+
+       Add a default value
+
+   commit 4854bd6984148212ff21673db27f0be8000d6a0d
+   Author: xxxxxxxxxx &lt;xxxxxxxxxx@cn330&gt;
+   Date:   Thu Aug 18 22:46:35 2024 +0700
+
+       Use argv
+
+   commit b6283f7ecc57648d0a6a3606bf53651dde04a7d0
+   Author: xxxxxxxxxx &lt;xxxxxxxxxx@cn330&gt;
+   Date:   Thu Aug 18 21:44:31 2024 +0700
+
+       Initial commit
+
+   ```
+
+### One line histories
+
+1. You can use `git log` to a show one line of each commit.
+
+   **RUN:**
+
+   ```console
+   git log --oneline
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   682c2694 (HEAD -&gt; main) Add comment
+   c81f6d93 Add a default value
+   4854bd69 Use argv
+   b6283f7e Initial commit
+   ```
+
+   Or use the default `pretty` format to see full SHA-1 of each commit.
+
+   **RUN:**
+
+   ```console
+   git log --pretty=oneline
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   682c26942c891f95775ce1c55fea3065ce15f182 (HEAD -&gt; main) Add comment
+   c81f6d937713abd979ebe9498a2ac670a272d0cb Add a default value
+   4854bd6984148212ff21673db27f0be8000d6a0d Use argv
+   b6283f7ecc57648d0a6a3606bf53651dde04a7d0 Initial commit
+   ```
+
+2. You can also customise the display of `pretty` format to display one line of each commit.
+
+   **RUN:**
+
+   ```console
+   git log --pretty=oneline
+   git log --pretty=oneline --max-count=2
+   git log --pretty=oneline --since=&#x27;5 minutes ago&#x27;
+   git log --pretty=oneline --until=&#x27;5 minutes ago&#x27;
+   git log --pretty=oneline --author=&lt;your name&gt;
+   git log --pretty=oneline --all
+   ```
+
+### Customise log format
+
+1. Use a custom log display using `pretty` format.
+
+   **RUN:**
+
+   ```console
+   git config --global alias.hist &quot;log --pretty=format:&#x27;%C(auto)%h %Cgreen(%cd)%C(auto)%d %C(auto)%s %C(cyan)[%an]&#x27; --graph --date=short&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * 682c2694 (2024-08-18) (HEAD -&gt; main) Add comment [xxxxxxxxxx]
+   * c81f6d93 (2024-08-18) Add a default value [xxxxxxxxxx]
+   * 4854bd69 (2024-08-18) Use argv [xxxxxxxxxx]
+   * b6283f7e (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+   Description of each parameters:
+
+   `--pretty=&quot;...&quot;` =&gt; defines the format of the output.
+   `%C(auto)` =&gt; use color automatically
+   `%C(auto)` =&gt; use green color
+   `%cd` =&gt; committer date
+   `%d` =&gt; any decorations on that commit (e.g. branch heads or tags)
+   `%h` =&gt; the abbreviated SHA-1 hash of the commit
+   `%s` =&gt; subject (the first line of a commit)
+   `C(cyan)` =&gt; use cyan color
+   `%an` =&gt; is the author name
+
+   `--graph` =&gt; display the commit tree in an ASCII graph layout
+   `--date=short` =&gt; keeps the date format short
+
+   For more details, see [pretty formats](https://git-scm.com/docs/pretty-formats)
+
+#### Check Point: Task 4
+
+In repository **`/d/working/hello`**, there should be:
+
+- **no new commit**
+- current total commits: **4**
+</pre></details></article><article class="panel task"><h3>Task 5 · ตั้ง aliases</h3><span class="tag">hello / config เครื่อง</span><p>ตัวอย่างนี้เป็น hist แบบสั้นที่อ่านกราฟได้; ถ้าโจทย์ต้องการ pretty format ตรงต้นฉบับ ใช้ค่าจากต้นฉบับด้านล่าง</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git config --global alias.st status
+git config --global alias.ci commit
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.hist &quot;log --oneline --graph --decorate&quot;
+git config --global alias.type &quot;cat-file -t&quot;
+git config --global alias.dump &quot;cat-file -p&quot;</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>+0 commits · รวม 4</p></div><details class="detail"><summary>อ่านต้นฉบับ task5.md</summary><pre class="source"># Task 5
+
+## Aliases
+
+### Common aliases
+
+`git status`, `git add`, `git commit`, and `git checkout` are common commands that it is useful to have abbreviations for them. Git let you define aliases for its commands.
+
+1. Add the following to the **`.gitconfig`** file in your `$HOME` directory.
+
+   ```gitconfig
+   [alias]
+     co = checkout
+     ci = commit
+     st = status
+     br = branch
+     hist = log --pretty=format:&#x27;%C(auto)%h %Cgreen(%cd)%C(auto)   %d %C(auto)%s %C(cyan)[%an]&#x27; --graph --date=short
+     type = cat-file -t
+     dump = cat-file -p
+   ```
+
+   Or use `git config` on command line.
+
+   **RUN:**
+
+   ```console
+   git config --global alias.co checkout
+   git config --global alias.ci commit
+   git config --global alias.st status
+   git config --global alias.br branch
+   git config --global alias.hist &quot;log --pretty=format:&#x27;%C(auto)%h %Cgreen(%cd)%C(auto) %d %C(auto)%s %C(cyan)[%an]&#x27; --graph --date=short&quot;
+   git config --global alias.type &quot;cat-file -t&quot;
+   git config --global alias.dump &quot;cat-file -p&quot;
+   ```
+
+   With these aliases defined in the **`.gitconfig`** file you can type:
+
+   - `git co` instead of `git checkout`
+   - `git ci` instead of `git commit`
+   - `git st` instead of `git status`
+   - `git hist` instead of the `git log` command with long options
+
+   The other commands `branch`, `type` and `dump` will be use when dealing with branch.
+
+#### Check Point: Task 5
+
+In repository **`/d/working/hello`**, there should be:
+
+- **no new commit**
+- current total commits: **4**
+</pre></details></article><article class="panel task"><h3>Task 6 · checkout เวอร์ชันแรกและกลับ main</h3><span class="tag">hello</span><p>checkout hash ทำให้ detached HEAD และเปลี่ยน tracked files; main ไม่ได้เลื่อนย้อนหลัง</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git log --oneline
+git checkout HASH_OF_YOUR_INITIAL_COMMIT
+cat hello.py
+git switch main
+cat hello.py</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>+0 commits · รวม 4 · กลับ main</p></div><details class="detail"><summary>อ่านต้นฉบับ task6.md</summary><pre class="source"># Task 6
+
+## Getting Old Versions
+
+Going back in history is very easy. The checkout command will copy any snapshot from the repository to the working directory.
+
+### Get the hashes for previous versions
+
+`git status`, `git add`, `git commit`, and `git checkout` are common commands that it is useful to have abbreviations for them. Git let you define aliases for its commands.
+
+1. Add the following to the **`.gitconfig`** file in your `$HOME` directory.
+
+   **RUN:**
+
+   ```console
+   git hist
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * 682c2694 (2024-08-18) (HEAD -&gt; main) Add comment [xxxxxxxxxx]
+   * c81f6d93 (2024-08-18) Add a default value [xxxxxxxxxx]
+   * 4854bd69 (2024-08-18) Use argv [xxxxxxxxxx]
+   * b6283f7e (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+   **Note:** The `hist` command is **an alias** that should be defined in previous task.
+
+2. Examine the log output and find the **hash for the first commit**. It should be the last line of the `git hist` output. Use that hash code (the first 4 characters should be are enough) in the command below.
+
+   **RUN:**
+
+   ```console
+   git checkout b6283f7e
+   ```
+
+   **Note:** Replace `b6283f7e` with the hash of the first commit in your repository.
+
+   **OUTPUT:**
+
+   ```console
+   Note: switching to &#x27;b6283f7e&#x27;.
+
+   You are in &#x27;detached HEAD&#x27; state. You can look around, make experimental
+   changes and commit them, and you can discard any commits you make in this
+   state without impacting any branches by switching back to a branch.
+
+   If you want to create a new branch to retain commits you create, you may
+   do so (now or later) by using -c with the switch command. Example:
+
+     git switch -c &lt;new-branch-name&gt;
+
+   Or undo this operation with:
+
+     git switch -
+
+   Turn off this advice by setting config variable advice.detachedHead to false
+
+   HEAD is now at b6283f7e Initial commit
+   ```
+
+   A &quot;**detached HEAD**” message in git means that
+
+   - **HEAD** (the part of git that tracks what your current working directory should match) is pointing directly to a commit rather than a branch.
+   - any changes that are committed in this state are only remembered as long as you don’t switch to a different branch.
+   - as soon as you checkout a new branch or tag, the detached commits will be &quot;lost&quot; (because **HEAD** has moved).
+   - if you want to save commits done in a detached state, you need to create a branch to remember the commits.
+
+3. Check the contents of the **`hello.py`**.
+
+   **RUN:**
+
+   ```console
+   cat hello.py
+   ```
+
+   **OUTPUT:**
+
+   ```python
+   print(&quot;Hello, world&quot;)
+
+   ```
+
+   Notice the contents of the **`hello.py`** file are the original contents.
+
+   **Note:** `cat` is a Unix command to show contents of file(s).
+
+### Return to the latest version in the `main` branch
+
+1. Use `checkout` again to return to `main` branch.
+
+   **RUN:**
+
+   ```console
+   git checkout main
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Previous HEAD position was b6283f7e Initial commit
+   Switched to branch &#x27;main&#x27;
+   ```
+
+   **`main`** is the name of the default branch. If you hav not change the global configuration, your branch may be **`master`**.
+
+2. Check contents of **`hello.py`** again.
+
+   **RUN:**
+
+   ```console
+   cat hello.py
+   ```
+
+   **OUTPUT:**
+
+   ```python
+   import sys
+   # Default is &quot;world&quot;
+   name = sys.argv[1] if len(sys.argv) &gt; 1 else &quot;world&quot;
+
+   print(&quot;Hello,&quot;, name)
+
+   ```
+
+#### Check Point: Task 6
+
+In repository **`/d/working/hello`**, there should be:
+
+- **no new commit**
+- current total commits: **4**
+</pre></details></article><article class="panel task"><h3>Task 7 · tag v1 และ v1-beta</h3><span class="tag">hello</span><p>v1 ชี้ Add comment; v1-beta ชี้ parent Add a default value; tags ไม่เลื่อนตาม commit ใหม่</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git tag v1
+git checkout v1^
+git tag v1-beta
+git checkout v1
+git checkout v1-beta
+git tag
+git log --oneline --decorate --all
+git switch main</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>+0 commits · รวม 4 · tags v1 / v1-beta</p></div><details class="detail"><summary>อ่านต้นฉบับ task7.md</summary><pre class="source"># Task 7
+
+## Tagging Versions
+
+Let’s call the current version of the &quot;hello program&quot; version 1 (v1).
+
+### Tagging version 1
+
+1. Show current log.
+
+   **RUN:**
+
+   ```console
+   git hist
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * 682c2694 (2024-08-18) (HEAD -&gt; main) Add comment [xxxxxxxxxx]
+   * c81f6d93 (2024-08-18) Add a default value [xxxxxxxxxx]
+   * 4854bd69 (2024-08-18) Use argv [xxxxxxxxxx]
+   * b6283f7e (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+2. Use `tag` command to create a tag.
+
+   **RUN:**
+
+   ```console
+   git tag v1
+   ```
+
+   Now you can refer to the current version of the program as `v1`.
+
+   **Note:** Without `-a` option. The `tag` command creates a **lightweight** tag.
+
+3. Check current log again.
+
+   **RUN:**
+
+   ```console
+   git hist
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * 682c2694 (2024-08-18) (HEAD -&gt; main, tag: v1) Add comment [xxxxxxxxxx]
+   * c81f6d93 (2024-08-18) Add a default value [xxxxxxxxxx]
+   * 4854bd69 (2024-08-18) Use argv [xxxxxxxxxx]
+   * b6283f7e (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+### Tagging previous versions
+
+1. Checkout the previous version. Rather than lookup up the hash, we will use the ^ notation to indicate &quot;the parent of v1&quot;.
+
+   ```console
+   git checkout v1^
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Note: switching to &#x27;v1^1&#x27;.
+
+   You are in &#x27;detached HEAD&#x27; state. You can look around, make experimental
+   changes and commit them, and you can discard any commits you make in this
+   state without impacting any branches by switching back to a branch.
+
+   If you want to create a new branch to retain commits you create, you may
+   do so (now or later) by using -c with the switch command. Example:
+
+     git switch -c &lt;new-branch-name&gt;
+
+   Or undo this operation with:
+
+     git switch -
+
+   Turn off this advice by setting config variable advice.   detachedHead to false
+
+   HEAD is now at c81f6d93 Add a default value
+   ```
+
+   Using `^` notation:
+
+   - `v1^` =&gt; 1 commit before v1 (its parent commit)
+   - `v1^^` =&gt; 2 commits before v1 (its grand parent commit)
+   - `v1^^^` =&gt; 3 commits before v1 (its great grand parent commit)
+   - etc.
+
+   Another notation is to use `~`:
+
+   - `v1~` =&gt; 1 commit before v1 (its parent commit)
+   - `v1~2` =&gt; 2 commits before v1 (its grand parent commit)
+   - `v1~3` =&gt; 3 commits before v1 (its great grand parent commit)
+   - etc.
+
+2. Tag the version immediately before the current version as `v1-beta`.
+
+   **RUN:**
+
+   ```console
+   git tag v1-beta
+   ```
+
+3. Check current log.
+
+   ```console
+   git hist
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * c81f6d93 (2024-08-18) (HEAD, tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * 4854bd69 (2024-08-18) Use argv [xxxxxxxxxx]
+   * b6283f7e (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+   Notice that **HEAD** does not point to anything, and the last commit is not shown.
+
+   Fortunately, we have already tagged our latest version as `v1` which we can refer to.
+
+4. Check content of **`hello.py`** again.
+
+   **RUN:**
+
+   ```console
+   cat hello.py
+   ```
+
+   **OUTPUT:**
+
+   ```python
+   import sys
+
+   name = sys.argv[1] if len(sys.argv) &gt; 1 else &quot;world&quot;
+
+   print(&quot;Hello,&quot;, name)
+   ```
+
+#### Checking out by tag name
+
+You can move around git history using tags, in addition to using commit ID.
+
+1. Check out commit from tag `v1`.
+
+   **RUN:**
+
+   ```console
+   git checkout v1
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Previous HEAD position was c81f6d93 Add a default value
+   HEAD is now at 682c2694 Add comment
+   ```
+
+2. Check out commit from tag `v1-beta`.
+
+   **RUN:**
+
+   ```console
+   git checkout v1-beta
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Previous HEAD position was 682c2694 Add comment
+   HEAD is now at c81f6d93 Add a default value
+   ```
+
+#### Viewing tags using the `tag` command
+
+1. See all available tags using the `git tag` command.
+
+   **RUN:**
+
+   ```console
+   git tag
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   v1
+   v1-beta
+   ```
+
+#### Viewing tags in the logs
+
+1. See all references, including tags, in the log.
+
+   **RUN:**
+
+   ```console
+   git hist --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * 682c2694 (2024-08-18) (tag: v1, main) Add comment [xxxxxxxxxx]
+   * c81f6d93 (2024-08-18) (HEAD, tag:v1-beta) Add a default value [xxxxxxxxxx]
+   * 4854bd69 (2024-08-18) Use argv [xxxxxxxxxx]
+   * b6283f7e (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+#### Checkout `main`
+
+1. Return to the latest commit in branch `main`.
+
+   **RUN:**
+
+   ```console
+   git checkout main
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Previous HEAD position was c81f6d93 Add a default value
+   Switched to branch &#x27;main&#x27;
+   ```
+
+#### Check Point: Task 7
+
+In repository **`/d/working/hello`**, there should be:
+
+- **no new commit**
+- current total commits: **4**
+</pre></details></article><article class="panel task"><h3>Task 8 · zip hello และ commit archive ใน A02</h3><span class="tag">parent workspace → A02</span><p>ZIP ต้องรวม hello/.git; commit ใน A02 ไม่ใช่ hello; +0 commits ใน hello</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>cd &quot;WORKSPACE_PATH&quot;
+# สร้าง ZIP ใหม่; ถ้ามีไฟล์เก่าควรจัดการก่อน
+zip -r hello.zip hello
+unzip -l hello.zip
+cp hello.zip A02/
+cd A02
+git add hello.zip
+git commit -m &quot;Complete Task 8&quot;
+# ส่งตามช่องทางโจทย์ เช่น git push origin main</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>hello ยังคง 4 · A02 มี 2 student commits</p></div><details class="detail"><summary>อ่านต้นฉบับ task8.md</summary><pre class="source"># Task 8
+
+## Submit Repository
+
+### Submit repository `hello`
+
+1. Change into a directory containing your repository **`hello`**, e.g. **`/d/working`**
+
+   **RUN:**
+
+   ```console
+   cd /d/working
+   ```
+
+2. Compress the directory **`hello`** as **`hello.zip`**.
+
+   Using `zip`:
+
+   **RUN:**
+
+   ```console
+   zip -r hello.zip hello
+   ```
+
+   Using `7-zip`:
+
+   **RUN:**
+
+   ```console
+   7z a hello.zip hello
+   ```
+
+   You can use other tools to compress the directory **`hello`** without using the command line.
+
+3. Copy **`hello.zip`** into your repository (**`/d/working/A02`**).
+
+   ```console
+   cp hello.zip /d/working/A02/
+   ```
+
+4. Add and commit **`hello.zip`** to the repository.
+
+   **RUN:**
+
+   ```console
+   git add hello.zip
+   git commit -m &quot;Complete Task 8&quot;
+   ```
+
+**Note:** In your repository (**`/d/working/A02`**), there should be 2 commits with messages:
+
+1. &quot;Complete Task 1&quot;
+2. &quot;Complete Task 8&quot;
+</pre></details></article></div><div class="assignment-panel" id="assignment-a03" hidden><div class="assignment-intro"><h2>A03 · Git Branch</h2><p>merge, conflict, reset, rebase</p></div><article class="panel task"><h3>Task 1 · ตั้ง identity และ AUTHORS</h3><span class="tag">A03</span><p>repo A03 สำหรับส่งงาน แยกจาก hello ที่จะทำ branch</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git config --local user.name &quot;YOUR_NAME YOUR_SURNAME&quot;
+git config --local user.email &quot;STUDENT_ID@cn330&quot;
+# แก้ AUTHORS
+git add AUTHORS
+git commit -m &quot;Complete Task 1&quot;</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>A03: 1 student commit</p></div><details class="detail"><summary>อ่านต้นฉบับ task1.md</summary><pre class="source"># Task 1
+
+## Setup
+
+1. Open Git Bash shell.
+
+2. Change into the directory that you have clone this repo to, e.g. **`/d/working/A03`**
+
+   **RUN:**
+
+   ```console
+   cd /d/working/A03
+   ```
+
+3. Config your name and email **locally** for this repo. Replace **`xxxxxxxxxx`** with your Student ID.
+
+   **RUN:**
+
+   ```console
+   git config user.name &quot;your_name your_surname&quot;
+   git config user.email &quot;xxxxxxxxxx@cn330&quot;
+   ```
+
+4. Edit the **`AUTHORS`** file.
+
+   - Add your information in appropriate section.
+   - Add the following information under your team name:
+
+     - your name and surname
+     - your (mock-up) email address, use format: &lt;xxxxxxxxxx@cn330&gt;
+
+5. Add and commit **`AUTHORS`** to repo.
+
+   **RUN:**
+
+   ```console
+   git add AUTHORS
+   git commit -m &quot;Complete Task 1&quot;
+   ```
+</pre></details></article><article class="panel task"><h3>Task 2 · ใช้ repo เดิมและจัดโครงสร้างโปรแกรม</h3><span class="tag">parent workspace → hello · main</span><p>รักษา .git เดิมจาก A02; git mv stage rename ให้อัตโนมัติ; แยกการเปลี่ยนแปลงสาม commit</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>unzip -l hello.zip
+# แตกเมื่อยังไม่มี hello ที่ต้องเก็บ
+unzip hello.zip
+cd hello
+ls -a
+git log --oneline
+cp ../A03/.gitignore .
+git add .gitignore
+git commit -m &quot;Add .gitignore&quot;
+mkdir lib
+git mv hello.py lib/
+git commit -m &quot;Move hello.py to lib/&quot;
+# สร้าง main.py มี import lib.hello
+git add main.py
+git commit -m &quot;Add initial main.py&quot;</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>จาก 4 → 7 commits · main</p></div><details class="detail"><summary>อ่านต้นฉบับ task2.md</summary><pre class="source"># Task 2
+
+## Prepare a Repository
+
+### Initial repository
+
+1. Open `Git Bash`.
+2. Use the file **`hello.zip`** created in assignment A02. If not already extracted, extract the file into a directory (**outside this repository**), e.g. **`/d/working`**. Then change into the directory.
+
+   **RUN:**
+
+   ```console
+   cd /d/working
+   unzip hello.zip
+   cd hello
+   ```
+
+3. Check that you have the correct repository. There should be 1 file, **`hello.py`**.
+
+   **RUN:**
+
+   ```console
+   ls -a
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   .  ..  .git  hello.py
+   ```
+
+4. There should be 4 commits.
+
+   **RUN:**
+
+   ```console
+   git log --oneline
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   1d92dda3 (HEAD -&gt; main) Add comment
+   01dda6f1 Add a default value
+   cf302843 Use argv
+   2ca693e7 Initial commit
+   ```
+
+### Add and commit `.gitignore` file
+
+1. Copy the file **`.gitignore`** from your assignment repository.
+
+   **RUN:**
+
+   ```console
+   cp /d/working/A03/.gitignore .
+   ```
+
+2. Check status.
+
+   **RUN:**
+
+   ```console
+   git status
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch main
+   Untracked files:
+     (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+           .gitignore
+
+   nothing added to commit but untracked files present (use &quot;git add&quot; to track)
+   ```
+
+3. Add the change.
+
+   **RUN:**
+
+   ```console
+   git add .gitignore
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch main
+   Changes to be committed:
+     (use &quot;git restore --staged &lt;file&gt;...&quot; to unstage)
+           new file:   .gitignore
+   ```
+
+4. Make a commit.
+
+   **RUN:**
+
+   ```console
+   git commit -m &quot;Add .gitignore&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [main 3a1e6a18] Add .gitignore
+    1 file changed, 13 insertions(+)
+    create mode 100644 .gitignore
+   ```
+
+### Move a file into a directory
+
+1. Create a directory **`lib`**.
+
+   **RUN:**
+
+   ```console
+   mkdir lib
+   ```
+
+2. Move the file **`hello.py`** into directory **`lib`** and commit.
+
+   **RUN:**
+
+   ```console
+   git mv hello.py lib/
+   ```
+
+3. Check status after moving the file.
+
+   **RUN:**
+
+   ```console
+   git status
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch main
+   Changes to be committed:
+     (use &quot;git restore --staged &lt;file&gt;...&quot; to unstage)
+           renamed:    hello.py -&gt; lib/hello.py
+   ```
+
+   **Note:** Change using `git mv` will automatically add the change to staging area.
+
+4. Add this change and make a commit.
+
+   **RUN:**
+
+   ```console
+   git commit -m &quot;Move hello.py to lib/&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [main 85fd5479] Move hello.py to lib/
+    1 file changed, 0 insertions(+), 0 deletions(-)
+    rename hello.py =&gt; lib/hello.py (100%)
+   ```
+
+### Create `main.py`
+
+1. Create another Python file, named **`main.py`**, with the following contents:
+
+   ```python
+   import lib.hello
+   ```
+
+2. Check status of the repository.
+
+   **RUN:**
+
+   ```console
+   git status
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch main
+   Untracked files:
+     (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+           main.py
+
+   nothing added to commit but untracked files present (use &quot;git add&quot; to track)
+   ```
+
+### Add `main.py` and commit to repository
+
+1. Add **`main.py`** to staging area.
+
+   **RUN:**
+
+   ```console
+   git add main.py
+   ```
+
+2. Check current status.
+
+   **RUN:**
+
+   ```console
+   git status
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch main
+   Changes to be committed:
+     (use &quot;git restore --staged &lt;file&gt;...&quot; to unstage)
+           new file:   main.py
+   ```
+
+3. Make a commit.
+
+   **RUN:**
+
+   ```console
+   git commit -m &quot;Add initial main.py&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [main bfbd5f61] Add initial main.py
+    1 file changed, 1 insertion(+)
+    create mode 100644 main.py
+   ```
+
+4. If not already defined, use alias `hist` defined in assignment A02.
+
+   **RUN:**
+
+   ```console
+   git config --global alias.hist &quot;log --pretty=format:&#x27;%C(auto)%h %Cgreen(%cd)%C(auto)%d %C(auto)%s %C(cyan)[%an]&#x27; --graph --date=short&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [main bfbd5f61] Add initial main.py
+    1 file changed, 1 insertion(+)
+    create mode 100644 main.py
+   ```
+
+5. Check current commits.
+
+   **RUN:**
+
+   ```console
+   git hist
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * bfbd5f61 (2024-08-18) (HEAD -&gt; main) Add initial main.py [xxxxxxxxxx]
+   * 85fd5479 (2024-08-18) Move hello.py to lib/ [xxxxxxxxxx]
+   * 3a1e6a18 (2024-08-18) Add .gitignore [xxxxxxxxxx]
+   * 1d92dda3 (2024-08-18) (tag: v1) Add comment [xxxxxxxxxx]
+   * 01dda6f1 (2024-08-18) (tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * cf302843 (2024-08-18) Use argv [xxxxxxxxxx]
+   * 2ca693e7 (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+#### Check Point: Task 2
+
+In repository **`/d/working/hello`**, there should be:
+
+- **3 new commits**
+- current total commits: **7**
+</pre></details></article><article class="panel task"><h3>Task 3 · สร้าง greet และ Greeter class</h3><span class="tag">hello · greet</span><p>แก้ indentation self.who ใน __init__ ให้ถูก; -f ใช้ข้าม ignore แต่ .gitignore ที่พบไม่ได้ ignore lib</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch -c greet
+# สร้าง lib/greeter.py ตามโจทย์
+git add -f lib/greeter.py
+git commit -m &quot;Add Greeter class&quot;
+# แก้ lib/hello.py ให้ใช้ Greeter
+git add -f lib/hello.py
+git commit -m &quot;Hello uses class Greeter&quot;</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>รวม 9 · 2 branches · greet</p></div><details class="detail"><summary>อ่านต้นฉบับ task3.md</summary><pre class="source"># Task 3
+
+## Create a Branch
+
+### Change the &quot;Hello, world&quot; program
+
+1. Create and change to a new branch `greet`.
+
+   **RUN:**
+
+   ```console
+   git branch greet
+   git checkout greet
+   ```
+
+   or run with single command with option.
+
+   ```console
+   git checkout -b greet
+   ```
+
+   or with a recent version of `git`
+
+   ```console
+   git switch -c greet
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Switched to a new branch &#x27;greet&#x27;
+   ```
+
+### Add a Greeter class
+
+1. Add a file **`lib/greeter.py`** with the following contents.
+
+   ```python
+   class Greeter:
+       def __init__(self, who):
+       self.who = who
+
+       def greet(self):
+           return f&quot;Hello, {self.who}&quot;
+
+   ```
+
+2. Add the change.
+
+   **RUN:**
+
+   ```console
+   git add -f lib/greeter.py
+   ```
+
+   **Note:** The option `-f` is to suppress warning from `git` due to ignored path `lib` in file **`.gitignore`**.
+
+3. Commit the change.
+
+   **RUN:**
+
+   ```console
+   git commit -m &quot;Add Greeter class&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [greet ee74befb] Add Greeter class
+    1 file changed, 6 insertions(+)
+    create mode 100644 lib/greeter.py
+   ```
+
+### Use class `Greeter` in **`lib/hello.py`**
+
+1. Modify **`lib/hello.py`** to use the following contents.
+
+   ```python
+   import sys
+   from .greeter import Greeter
+
+   # Default is &quot;world&quot;
+   name = sys.argv[1] if len(sys.argv) &gt; 1 else &quot;world&quot;
+
+   greeter = Greeter(name)
+   print(greeter.greet())
+   ```
+
+2. Add change to **`lib/hello.py`**.
+
+   **RUN:**
+
+   ```console
+   git add -f lib/hello.py
+   ```
+
+3. Commit the change.
+
+   **RUN:**
+
+   ```console
+   git commit -m &quot;Hello uses class Greeter&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [greet 8469fe39] Hello uses class Greeter
+    1 file changed, 4 insertions(+), 1 deletion(-)
+   ```
+
+4. #### Check Point: Task 3
+
+In repository **`/d/working/hello`**, there should be:
+
+- **2 new commits**
+- current total commits: **9**
+- **1 new branch**
+- current total branches: **2**
+- current branch: **greet**
+</pre></details></article><article class="panel task"><h3>Task 4 · ดูความแตกต่างระหว่าง branches</h3><span class="tag">hello</span><p>switch ทำให้ tracked file ตรง snapshot ของแต่ละ branch; ไม่มี commit ใหม่</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git branch
+git log --oneline --graph --decorate --all
+git switch main
+cat lib/hello.py
+git switch greet
+cat lib/hello.py</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>รวม 9 · 2 branches · กลับ greet</p></div><details class="detail"><summary>อ่านต้นฉบับ task4.md</summary><pre class="source"># Task 4
+
+## Navigating Branch
+
+### Show History
+
+1. See all local branches.
+
+   **RUN:**
+
+   ```console
+   git branch
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * greet
+   main
+   ```
+
+   **Note:** The `*` in front of `greet` indicates the **current branch** you are on.
+
+2. See all branch from `git log` (use alias `hist`).
+
+   **RUN:**
+
+   ```console
+   git hist --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * 8469fe39 (2024-08-18) (HEAD -&gt; greet) Hello uses class Greeter [xxxxxxxxxx]
+   * ee74befb (2024-08-18) Add Greeter class [xxxxxxxxxx]
+   * 93ad800a (2024-08-18) (main) Add initial main.py [xxxxxxxxxx]
+   * 834ca7ff (2024-08-18) Move hello.py to lib/ [xxxxxxxxxx]
+   * 08fd0b29 (2024-08-18) Add .gitignore [xxxxxxxxxx]
+   * 1d92dda3 (2024-08-18) (tag: v1) Add comment [xxxxxxxxxx]
+   * 01dda6f1 (2024-08-18) (tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * cf302843 (2024-08-18) Use argv [xxxxxxxxxx]
+   * 2ca693e7 (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+### Switch to `main` branch
+
+1. Use `git checkout` to change branch.
+
+   **RUN:**
+
+   ```console
+   git checkout main
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Switched to branch &#x27;main&#x27;
+   ```
+
+   Or with recent version of `git`, use `git switch` command.
+
+   **RUN:**
+
+   ```console
+   git switch main
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Switched to branch &#x27;main&#x27;
+   ```
+
+2. Check contents of **`lib/hello.py`**.
+
+   **RUN:**
+
+   ```console
+   cat lib/hello.py
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   import sys
+   # Default is &quot;world&quot;
+   name = sys.argv[1] if len(sys.argv) &gt; 1 else &quot;world&quot;
+
+   print(&quot;Hello,&quot;, name)
+   ```
+
+### Switch back to branch `greet`
+
+1. Use `git checkout` or `git switch` to change branch again.
+
+   **RUN:**
+
+   ```console
+   git checkout greet
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Switched to branch &#x27;greet&#x27;
+   ```
+
+   Or with recent version of `git`, use `git switch` command.
+
+   **RUN:**
+
+   ```console
+   git switch greet
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Switched to branch &#x27;greet&#x27;
+   ```
+
+2. Check contents of **`lib/hello.py`** again.
+
+   **RUN:**
+
+   ```console
+   cat lib/hello.py
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   import sys
+   from .greeter import Greeter
+
+   # Default is &quot;world&quot;
+   name = sys.argv[1] if len(sys.argv) &gt; 1 else &quot;world&quot;
+
+   greeter = Greeter(name)
+   print(greeter.greet())
+   ```
+
+#### Check Point: Task 4
+
+In repository **`/d/working/hello`**, there should be:
+
+- **no new commit**
+- current total commits: **9**
+- **no new branch**
+- current total branches: **2**
+- current branch: **greet**
+</pre></details></article><article class="panel task"><h3>Task 5 · main เพิ่ม README ให้กราฟแตกแขนง</h3><span class="tag">hello · main</span><p>main เพิ่มหนึ่ง commit แยกจากสอง commits ของ greet</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch main
+# สร้าง README.md ตามโจทย์
+git add README.md
+git commit -m &quot;Add README file&quot;
+git log --oneline --graph --all</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>รวม 10 · 2 branches · main</p></div><details class="detail"><summary>อ่านต้นฉบับ task5.md</summary><pre class="source"># Task 5
+
+## Changes in Branch `main`
+
+### Switch to branch `main`
+
+1. Use `git switch` command.
+
+   **RUN:**
+
+   ```console
+   git switch main
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Switched to branch &#x27;main&#x27;
+   ```
+
+### Create a **`README.md`** file
+
+1. Create a **`README.md`** file with the following contents.
+
+   ```markdown
+   # README
+
+   This is a &quot;Hello World&quot; program.
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [main c198e77b] Add README file
+    1 file changed, 4 insertions(+)
+    create mode 100644 README.md
+   ```
+
+2. Add and commit the file **`README.md`**.
+
+   **RUN:**
+
+   ```console
+   git add README.md
+   git commit -m &quot;Add README file&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Switched to branch &#x27;main&#x27;
+   ```
+
+3. View the diverging branches in the repository. Use the alias `hist` commmand.
+
+   **RUN:**
+
+   ```console
+   git hist --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * c198e77b (2024-08-18) (HEAD -&gt; main) Add README file [xxxxxxxxxx]
+   | * 8469fe39 (2024-08-18) (greet) Hello uses class Greeter [xxxxxxxxxx]
+   | * ee74befb (2024-08-18) Add Greeter class [xxxxxxxxxx]
+   |/
+   * 93ad800a (2024-08-18) Add initial main.py [xxxxxxxxxx]
+   * 834ca7ff (2024-08-18) Move hello.py to lib/ [xxxxxxxxxx]
+   * 08fd0b29 (2024-08-18) Add .gitignore [xxxxxxxxxx]
+   * 1d92dda3 (2024-08-18) (tag: v1) Add comment [xxxxxxxxxx]
+   * 01dda6f1 (2024-08-18) (tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * cf302843 (2024-08-18) Use argv [xxxxxxxxxx]
+   * 2ca693e7 (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+   **Note:** Option `--all` asks git to show all references (branches, tags).
+
+#### Check Point: Task 5
+
+In repository **`/d/working/hello`**, there should be:
+
+- **1 new commit**
+- current total commits: **10**
+- **no new branch**
+- current total branches: **2**
+- current branch: **main**
+</pre></details></article><article class="panel task"><h3>Task 6 · merge main เข้า greet แบบไม่มี conflict</h3><span class="tag">hello · greet</span><p>เกิด merge commit ที่มีสอง parents; main ยังชี้ Add README file</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch greet
+git merge main
+# บันทึก/ออก editor โดยใช้ default merge message
+git log --oneline --graph --all</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>รวม 11 · 2 branches · greet</p></div><details class="detail"><summary>อ่านต้นฉบับ task6.md</summary><pre class="source"># Task 6
+
+## Merging
+
+### Merge the branches
+
+1. Change back to branch `greet`.
+
+   **RUN:**
+
+   ```console
+   git switch greet
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Switched to branch &#x27;greet&#x27;
+   ```
+
+2. Merge the changes in branch `main` onto branch `greet`.
+
+   **RUN:**
+
+   ```console
+   git merge main
+   ```
+
+   `git` will open your the default editor to add a merge commit message. Use the default commit message. Save and exit your default editor.
+
+   **EDITOR:**
+
+   ```text
+   Merge branch &#x27;main&#x27; into greet
+   # Please enter a commit message to explain why this merge is necessary,
+   # especially if it merges an updated upstream into a topic branch.
+   #
+   # Lines starting with &#x27;#&#x27; will be ignored, and an empty message aborts
+   # the commit.
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Merge made by the &#x27;recursive&#x27; strategy.
+   README.md | 4 ++++
+   1 file changed, 4 insertions(+)
+   create mode 100644 README.md
+   ```
+
+   **Note:**
+   - change in branch `main` do not conflict with files in branch`greet`
+   - `git` can successfully merge the change
+
+3. Check the result of a merge.
+
+   ```console
+   git hist --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   *   daee3840 (2024-08-18) (HEAD -&gt; greet) Merge branch &#x27;main&#x27; into greet [xxxxxxxxxx]
+   |\  
+   | * c198e77b (2024-08-18) (main) Add README file [xxxxxxxxxx]
+   * | 8469fe39 (2024-08-18) Hello uses class Greeter [xxxxxxxxxx]
+   * | ee74befb (2024-08-18) Add Greeter class [xxxxxxxxxx]
+   |/  
+   * 93ad800a (2024-08-18) Add initial main.py [xxxxxxxxxx]
+   * 834ca7ff (2024-08-18) Move hello.py to lib/ [xxxxxxxxxx]
+   * 08fd0b29 (2024-08-18) Add .gitignore [xxxxxxxxxx]
+   * 1d92dda3 (2024-08-18) (tag: v1) Add comment [xxxxxxxxxx]
+   * 01dda6f1 (2024-08-18) (tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * cf302843 (2024-08-18) Use argv [xxxxxxxxxx]
+   * 2ca693e7 (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+#### Check Point: Task 6
+
+In repository **`/d/working/hello`**, there should be:
+
+- **1 new commit** (merge commit)
+- current total commits: **11**
+- **no new branch**
+- current total branches: **2**
+- current branch: **greet**
+</pre></details></article><article class="panel task"><h3>Task 7 · สร้างการแก้ไขที่ main ให้เกิด conflict</h3><span class="tag">hello · main</span><p>main เปลี่ยนบรรทัดเดียวกับ greet ในวิธีที่ Git รวมเองไม่ได้</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch main
+# แก้ lib/hello.py ให้ใช้ input ตามโจทย์
+git diff
+git add -f lib/hello.py
+git commit -m &quot;Make interactive&quot;</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>รวม 12 · main</p></div><details class="detail"><summary>อ่านต้นฉบับ task7.md</summary><pre class="source"># Task 7
+
+## Create a Conflict Change
+
+### Add a change that can create a merge conflict
+
+1. Change back to branch `main`.
+
+   **RUN:**
+
+   ```console
+   git switch main
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Switched to branch &#x27;main&#x27;
+   ```
+
+2. Modify **`lib/hello.py`**.
+
+   ```python
+   import sys
+
+   my_name = input(&quot;What is your name: &quot;)
+
+   print(f&quot;Hello, {my_name}&quot;)
+   ```
+
+3. Check the changes in working directory from stagin area.
+
+   **RUN:**
+
+   ```console
+   git diff
+   ```
+
+   **OUTPUT:**
+
+   ```diff
+   diff --git a/lib/hello.py b/lib/hello.py
+   index 42456836..dc8ba7c9 100644
+   --- a/lib/hello.py
+   +++ b/lib/hello.py
+   @@ -1,5 +1,5 @@
+    import sys
+   -# Default is &quot;world&quot;
+   -name = sys.argv[1] if len(sys.argv) &gt; 1 else    &quot;world&quot;
+
+   -print(&quot;Hello,&quot;, name)
+   +my_name = input(&quot;What is your name: &quot;)
+   +
+   +print(f&quot;Hello, {my_name}&quot;)
+   ```
+
+4. Add and commit the change.
+
+   **RUN:**
+
+   ```console
+   git add -f lib/hello.py
+   git commit -m &quot;Make interactive&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [main bd538d41] Make interactive
+    1 file changed, 3 insertions(+), 3 deletions(-)
+   ```
+
+5. View the branches.
+
+   **RUN:**
+
+   ```console
+   git hist --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * bd538d41 (2024-08-18) (HEAD -&gt; main) Make interactive [xxxxxxxxxx]
+   | *   daee3840 (2024-08-18) (greet) Merge branch &#x27;main&#x27; into greet [xxxxxxxxxx]
+   | |\
+   | |/
+   |/|
+   * | c198e77b (2024-08-18) Add README file [xxxxxxxxxx]
+   | * 8469fe39 (2024-08-18) Hello uses class Greeter [xxxxxxxxxx]
+   | * ee74befb (2024-08-18) Add Greeter class [xxxxxxxxxx]
+   |/
+   * 93ad800a (2024-08-18) Add initial main.py [xxxxxxxxxx]
+   * 834ca7ff (2024-08-18) Move hello.py to lib/ [xxxxxxxxxx]
+   * 08fd0b29 (2024-08-18) Add .gitignore [xxxxxxxxxx]
+   * 1d92dda3 (2024-08-18) (tag: v1) Add comment [xxxxxxxxxx]
+   * 01dda6f1 (2024-08-18) (tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * cf302843 (2024-08-18) Use argv [xxxxxxxxxx]
+   * 2ca693e7 (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+   **Note:**
+
+   - branch `main` at commit “Add README” has been merged to the `greet` branch
+   - there is now an additional commit on `main` that has not been merged back to `greet`
+   - the latest change in branch `main` conflicts with some existing changes in branch `greet` (**`lib/hello.py`**)
+
+#### Check Point: Task 7
+
+In repository **`/d/working/hello`**, there should be:
+
+- **1 new commit**
+- current total commits: **12**
+- **no new branch**
+- current total branches: **2**
+- current branch: **main**
+</pre></details></article><article class="panel task"><h3>Task 8 · merge แล้วอ่าน conflict</h3><span class="tag">hello · greet</span><p>HEAD ใน markers เป็นฝั่ง greet; main เป็น incoming; merge ยังไม่สร้าง commit เสร็จ</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch greet
+git merge main
+git status
+cat lib/hello.py</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>ยังรวม 12 · greet · unmerged paths</p></div><details class="detail"><summary>อ่านต้นฉบับ task8.md</summary><pre class="source"># Task 8
+
+## Merging with Conflict
+
+### Merge `main` onto `greet`
+
+1. Change back to branch `greet`.
+
+   **RUN:**
+
+   ```console
+   git switch greet
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Switched to branch &#x27;greet&#x27;
+   ```
+
+2. Merge branch `main` onto branch `greet`.
+
+   **RUN:**
+
+   ```console
+   git merge main
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Auto-merging lib/hello.py
+   CONFLICT (content): Merge conflict in lib/hello.py
+   Automatic merge failed; fix conflicts and then commit the result.
+   ```
+
+   If **merge tool** is set, `git` will open your merge tool.
+
+3. Open the file **`lib/hello.py`** and see its contents.
+
+   ```python
+   &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+   from .greeter import Greeter
+
+   # Default is &quot;world&quot;
+   name = sys.argv[1] if len(sys.argv) &gt; 1 else    &quot;world&quot;
+
+   greeter = Greeter(name)
+   print(greeter.greet())
+   =======
+
+   my_name = input(&quot;What is your name: &quot;)
+
+   print(f&quot;Hello, {my_name}&quot;)
+   &gt;&gt;&gt;&gt;&gt;&gt;&gt; main
+   ```
+
+   **Note:**
+
+   - there are 2 sections, separated by `=======`
+   - the first section
+     - starts with `&lt;&lt;&lt;&lt;&lt;&lt;&lt;` HEAD
+     - is the version on the head of the current branch (`greet`)
+   - the second section
+     - ends with `&gt;&gt;&gt;&gt;&gt;&gt;&gt;` main
+     - is the version on the `main` branch (incoming change).
+
+4. Check current status.
+
+   **RUN:**
+
+   ```console
+   git status
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   On branch greet
+   You have unmerged paths.
+     (fix conflicts and run &quot;git commit&quot;)
+     (use &quot;git merge --abort&quot; to abort the merge)
+
+   Unmerged paths:
+     (use &quot;git add &lt;file&gt;...&quot; to mark resolution)
+           both modified:   lib/hello.py
+   ```
+
+#### Check Point: Task 8
+
+In repository **`/d/working/hello`**, there should be:
+
+- **no new commit**
+- current total commits: **12**
+- **no new branch**
+- current total branches: **2**
+- current branch: **greet**
+</pre></details></article><article class="panel task"><h3>Task 9 · รวม input กับ Greeter และจบ merge</h3><span class="tag">hello · greet</span><p>ลบ markers ทุกส่วน และเก็บพฤติกรรมทั้งสองฝั่งตามโจทย์; add ยืนยัน resolution ไม่ยืนยันว่าโค้ดถูกเอง</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre> # แก้ lib/hello.py ให้ใช้ input และ Greeter ร่วมกัน
+git add -f lib/hello.py
+git diff --staged
+git commit -m &quot;Merge main, fix conflict&quot;
+git log --oneline --graph --all</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>รวม 13 · greet · conflict จบ</p></div><details class="detail"><summary>อ่านต้นฉบับ task9.md</summary><pre class="source"># Task 9
+
+## Resolve Conflicts
+
+### Fix the merge conflict
+
+1. You need to **manually resolve the conflict**.
+
+2. Modify **`lib/hello.py`** so that the file contains the following contents.
+
+   ```python
+   import sys
+   from .greeter import Greeter
+
+   my_name = input(&quot;What is your name: &quot;)
+
+   greeter = Greeter(my_name)
+   print(greeter.greet())
+   ```
+
+3. Add and commit the conflict resolution.
+
+   **RUN:**
+
+   ```console
+   git add -f lib/hello.py
+   git commit -m &quot;Merge main, fix conflict&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [greet cc20d6a9] Merge main, fix conflict
+   ```
+
+4. View current log.
+
+   **RUN:**
+
+   ```console
+   git hist --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   *   cc20d6a9 (2024-08-18) (HEAD -&gt; greet) Merge main, fix conflict [xxxxxxxxxx]
+   |\
+   | * bd538d41 (2024-08-18) (main) Make interactive [xxxxxxxxxx]
+   * | daee3840 (2024-08-18) Merge branch &#x27;main&#x27; into greet [xxxxxxxxxx]
+   |\|
+   | * c198e77b (2024-08-18) Add README file [xxxxxxxxxx]
+   * | 8469fe39 (2024-08-18) Hello uses class Greeter [xxxxxxxxxx]
+   * | ee74befb (2024-08-18) Add Greeter class [xxxxxxxxxx]
+   |/
+   * 93ad800a (2024-08-18) Add initial main.py [xxxxxxxxxx]
+   * 834ca7ff (2024-08-18) Move hello.py to lib/ [xxxxxxxxxx]
+   * 08fd0b29 (2024-08-18) Add .gitignore [xxxxxxxxxx]
+   * 1d92dda3 (2024-08-18) (tag: v1) Add comment [xxxxxxxxxx]
+   * 01dda6f1 (2024-08-18) (tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * cf302843 (2024-08-18) Use argv [xxxxxxxxxx]
+   * 2ca693e7 (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+#### Check Point: Task 9
+
+In repository **`/d/working/hello`**, there should be:
+
+- **1 new commit**
+- current total commits: **13**
+- **no new branch**
+- current total branches: **2**
+- current branch: **greet**
+</pre></details></article><article class="panel task"><h3>Task 10 · reset greet ไปก่อน merge</h3><span class="tag">hello · greet</span><p>ใช้ hash ของคุณ ไม่คัดลอก 8469fe39; hard แทนที่ index/working tree ด้วย snapshot เป้าหมาย</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch greet
+git status
+git log --oneline --graph --all
+# หา hash ของ Hello uses class Greeter ก่อน merge
+git show HASH_OF_YOUR_TARGET
+git reset --hard HASH_OF_YOUR_TARGET</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>reachable จาก main/greet รวม 11 · greet</p></div><details class="detail"><summary>อ่านต้นฉบับ task10.md</summary><pre class="source"># Task 10
+
+## Resetting the `greet` Branch
+
+### Reset the `greet` branch
+
+1. We can reset a branch (a pointer) to any commit we want.
+
+2. Go back in branch `greet` up to the point before the merge with `main`. We need to find the last commit before the merge. Make sure we are in branch `greet`.
+
+   **RUN:**
+
+   ```console
+   git switch greet
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Already on &#x27;greet&#x27;
+   ```
+
+3. Find commit ID (SHA-1 hash) from its log.
+
+   **RUN:**
+
+   ```console
+   git hist --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   *   cc20d6a9 (2024-08-18) (HEAD -&gt; greet) Merge main, fix conflict [xxxxxxxxxx]
+   |\
+   | * bd538d41 (2024-08-18) (main) Make interactive [xxxxxxxxxx]
+   * | daee3840 (2024-08-18) Merge branch &#x27;main&#x27; into greet [xxxxxxxxxx]
+   |\|
+   | * c198e77b (2024-08-18) Add README file [xxxxxxxxxx]
+   * | 8469fe39 (2024-08-18) Hello uses class Greeter [xxxxxxxxxx]
+   * | ee74befb (2024-08-18) Add Greeter class [xxxxxxxxxx]
+   |/
+   * 93ad800a (2024-08-18) Add initial main.py [xxxxxxxxxx]
+   * 834ca7ff (2024-08-18) Move hello.py to lib/ [xxxxxxxxxx]
+   * 08fd0b29 (2024-08-18) Add .gitignore [xxxxxxxxxx]
+   * 1d92dda3 (2024-08-18) (tag: v1) Add comment [xxxxxxxxxx]
+   * 01dda6f1 (2024-08-18) (tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * cf302843 (2024-08-18) Use argv [xxxxxxxxxx]
+   * 2ca693e7 (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+   In this case, the commit ID is `8469fe39`.
+
+4. Reset branch `greet` to the commit ID found.
+
+   **RUN:**
+
+   ```console
+   git reset --hard 8469fe39
+   ```
+
+   **Replace** `8469fe39` with your commit ID.
+
+   **OUTPUT:**
+
+   ```console
+   HEAD is now at 8469fe39 Hello uses class Greeter
+   ```
+
+   **Note:**
+
+   - `reset` move `HEAD` in current branch to point to the specified commit
+   - option `--hard` restores
+     - contents in repository into staging area (index) and
+     - contents in repository into working directory
+
+5. Check the branch.
+
+   **RUN:**
+
+   ```console
+   git hist --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * bd538d41 (2024-08-18) (main) Make interactive [xxxxxxxxxx]
+   * c198e77b (2024-08-18) Add README file [xxxxxxxxxx]
+   | * 8469fe39 (2024-08-18) (HEAD -&gt; greet) Hello uses class Greeter [xxxxxxxxxx]
+   | * ee74befb (2024-08-18) Add Greeter class [xxxxxxxxxx]
+   |/
+   * 93ad800a (2024-08-18) Add initial main.py [xxxxxxxxxx]
+   * 834ca7ff (2024-08-18) Move hello.py to lib/ [xxxxxxxxxx]
+   * 08fd0b29 (2024-08-18) Add .gitignore [xxxxxxxxxx]
+   * 1d92dda3 (2024-08-18) (tag: v1) Add comment [xxxxxxxxxx]
+   * 01dda6f1 (2024-08-18) (tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * cf302843 (2024-08-18) Use argv [xxxxxxxxxx]
+   * 2ca693e7 (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+#### Check Point: Task 10
+
+In repository **`/d/working/hello`**, there should be:
+
+- **no new commit**
+- current total commits: **11**
+- **no new branch**
+- current total branches: **2**
+- current branch: **greet**
+</pre></details></article><article class="panel task"><h3>Task 11 · reset main กลับ Add README file</h3><span class="tag">hello · main</span><p>ต้นฉบับขั้น 5 เขียน greet ผิดบริบท; คำสั่ง reset ทำกับ current main ตามขั้นตอน/กราฟ</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch main
+git status
+git log --oneline --graph --all
+# หา hash ของ Add README file
+git show HASH_OF_YOUR_TARGET
+git reset --hard HASH_OF_YOUR_TARGET</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>reachable รวม 10 · main</p></div><details class="detail"><summary>อ่านต้นฉบับ task11.md</summary><pre class="source"># Task 11
+
+## Resetting the `main` Branch
+
+### Reset the `main` branch
+
+1. When we added the interactive mode to the `main` branch, we made a change that conflicted with changes in the `greet` branch.
+
+2. The `Add README file` commit is the one directly before the conflicting interactive mode. We will reset the `main` branch to the commit `Add README file`.
+
+3. Make sure we are in branch `main`.
+
+   **RUN:**
+
+   ```console
+   git switch main
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Switched to branch &#x27;main&#x27;
+   ```
+
+4. Find commit ID (SHA-1 hash) from its log.
+
+   **RUN:**
+
+   ```console
+   git hist --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * bd538d41 (2024-08-18) (HEAD -&gt; main) Make interactive [xxxxxxxxxx]
+   * c198e77b (2024-08-18) Add README file [xxxxxxxxxx]
+   | * 8469fe39 (2024-08-18) (greet) Hello uses class Greeter [xxxxxxxxxx]
+   | * ee74befb (2024-08-18) Add Greeter class [xxxxxxxxxx]
+   |/
+   * 93ad800a (2024-08-18) Add initial main.py [xxxxxxxxxx]
+   * 834ca7ff (2024-08-18) Move hello.py to lib/ [xxxxxxxxxx]
+   * 08fd0b29 (2024-08-18) Add .gitignore [xxxxxxxxxx]
+   * 1d92dda3 (2024-08-18) (tag: v1) Add comment [xxxxxxxxxx]
+   * 01dda6f1 (2024-08-18) (tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * cf302843 (2024-08-18) Use argv [xxxxxxxxxx]
+   * 2ca693e7 (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+   In this case, the commit ID is `c198e77b`.
+
+5. Reset branch `greet` to the commit ID found.
+
+   **RUN:**
+
+   ```console
+   git reset --hard c198e77b
+   ```
+
+   **Replace** `c198e77b` with your commit ID.
+
+   **OUTPUT:**
+
+   ```console
+   HEAD is now at c198e77b Add README file
+   ```
+
+6. Check the branch.
+
+   **RUN:**
+
+   ```console
+   git hist --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * c198e77b (2024-08-18) (HEAD -&gt; main) Add README file [xxxxxxxxxx]
+   | * 8469fe39 (2024-08-18) (greet) Hello uses class Greeter [xxxxxxxxxx]
+   | * ee74befb (2024-08-18) Add Greeter class [xxxxxxxxxx]
+   |/
+   * 93ad800a (2024-08-18) Add initial main.py [xxxxxxxxxx]
+   * 834ca7ff (2024-08-18) Move hello.py to lib/ [xxxxxxxxxx]
+   * 08fd0b29 (2024-08-18) Add .gitignore [xxxxxxxxxx]
+   * 1d92dda3 (2024-08-18) (tag: v1) Add comment [xxxxxxxxxx]
+   * 01dda6f1 (2024-08-18) (tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * cf302843 (2024-08-18) Use argv [xxxxxxxxxx]
+   * 2ca693e7 (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+#### Check Point: Task 11
+
+In repository **`/d/working/hello`**, there should be:
+
+- **no new commit**
+- current total commits: **10**
+- **no new branch**
+- current total branches: **2**
+- current branch: **main**
+</pre></details></article><article class="panel task"><h3>Task 12 · rebase greet บน main</h3><span class="tag">hello · greet</span><p>replay ทำให้ประวัติเป็นเส้นต่อจาก main; ไม่ใช่แก้ commit object เดิม แม้ count ไม่เพิ่ม</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch greet
+git rebase main
+git log --oneline --graph main greet
+git rev-list --count main greet</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>reachable รวม 10 · greet · สอง commits ได้ hash ใหม่</p></div><details class="detail"><summary>อ่านต้นฉบับ task12.md</summary><pre class="source"># Task 12
+
+## Rebasing
+
+### Use `rebase` command instead of `merge`
+
+1. Make sure we are in branch `greet`.
+
+   **RUN:**
+
+   ```console
+   git switch greet
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Switched to branch &#x27;greet&#x27;
+   ```
+
+2. View branches.
+
+   **RUN:**
+
+   ```console
+   git hist --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * c198e77b (2024-08-18) (main) Add README file [xxxxxxxxxx]
+   | * 8469fe39 (2024-08-18) (HEAD -&gt; greet) Hello uses class Greeter [xxxxxxxxxx]
+   | * ee74befb (2024-08-18) Add Greeter class [xxxxxxxxxx]
+   |/
+   * 93ad800a (2024-08-18) Add initial main.py [xxxxxxxxxx]
+   * 834ca7ff (2024-08-18) Move hello.py to lib/ [xxxxxxxxxx]
+   * 08fd0b29 (2024-08-18) Add .gitignore [xxxxxxxxxx]
+   * 1d92dda3 (2024-08-18) (tag: v1) Add comment [xxxxxxxxxx]
+   * 01dda6f1 (2024-08-18) (tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * cf302843 (2024-08-18) Use argv [xxxxxxxxxx]
+   * 2ca693e7 (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+3. Rebase `greet` onto `main`.
+
+   **RUN:**
+
+   ```console
+   git rebase main
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Successfully rebased and updated refs/heads/greet.
+   ```
+
+4. Check result of the rebase.
+
+   **RUN:**
+
+   ```console
+   git hist --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * 6403bc17 (2024-08-18) (HEAD -&gt; greet) Hello uses class Greeter [xxxxxxxxxx]
+   * c18f3f4a (2024-08-18) Add Greeter class [xxxxxxxxxx]
+   * c198e77b (2024-08-18) (main) Add README file [xxxxxxxxxx]
+   * 93ad800a (2024-08-18) Add initial main.py [xxxxxxxxxx]
+   * 834ca7ff (2024-08-18) Move hello.py to lib/ [xxxxxxxxxx]
+   * 08fd0b29 (2024-08-18) Add .gitignore [xxxxxxxxxx]
+   * 1d92dda3 (2024-08-18) (tag: v1) Add comment [xxxxxxxxxx]
+   * 01dda6f1 (2024-08-18) (tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * cf302843 (2024-08-18) Use argv [xxxxxxxxxx]
+   * 2ca693e7 (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+   **Note:**
+
+   - the result of a rebase is a linear history in the repository.
+   - all commit IDs in `greet` branch after the commit `Add README file` in `main` branch have been changed
+
+## Merge VS Rebase
+
+- the final result of the rebase is very similar to the merge.
+- the `greet` branch now contains all of its changes, as well as all the changes from the `main` branch.
+- the commit tree is quite different
+  - the commit tree for the `greet` branch has been rewritten so that the `main` branch is a part of the commit history.
+
+#### Check Point: Task 12
+
+In repository **`/d/working/hello`**, there should be:
+
+- **no new commit** (2 updated commits)
+- current total commits: **10**
+- **no new branch**
+- current total branches: **2**
+- current branch: **greet**
+</pre></details></article><article class="panel task"><h3>Task 13 · merge greet กลับ main แบบ fast-forward</h3><span class="tag">hello · main</span><p>ไม่มี merge commit ใหม่ เพราะ main เป็น ancestor ของ greet หลัง rebase; อย่าเพิ่ม --no-ff</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git switch main
+git merge greet
+git log --oneline --graph --decorate main greet
+git rev-list --count main greet</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>Fast-forward · รวม 10 · main/greet ชี้ปลายเดียวกัน</p></div><details class="detail"><summary>อ่านต้นฉบับ task13.md</summary><pre class="source"># Task 13
+
+## Merge Back to `main`
+
+### Merge `greet` into `main`
+
+1. Make sure we are in branch `main`.
+
+   **RUN:**
+
+   ```console
+   git switch main
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Switched to branch &#x27;main&#x27;
+   ```
+
+2. Merge `greet` into `main`.
+
+   **RUN:**
+
+   ```console
+   git merge greet
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Updating c198e77b..6403bc17
+   Fast-forward
+    lib/greeter.py | 6 ++++++
+    lib/hello.py   | 5 ++++-
+    2 files changed, 10 insertions(+), 1 deletion(-)
+    create mode 100644 lib/greeter.py
+   ```
+
+   **Note:**
+
+   - because the head of `main` is a direct ancestor of the head of the `greet` branch, `git` is able to do a **fast-forward merge**.
+   - when **fast-forwarding**, the branch pointer is simply moved forward to point to the same commit as the `greeter` branch.
+   - there will never be conflicts in a fast-forward merge
+
+3. Check result of the merge.
+
+   **RUN:**
+
+   ```console
+   git hist --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * 6403bc17 (2024-08-18) (HEAD -&gt;main, greet) Hello uses class Greeter [xxxxxxxxxx]
+   * c18f3f4a (2024-08-18) Add Greeter class [xxxxxxxxxx]
+   * c198e77b (2024-08-18) Add README file [xxxxxxxxxx]
+   * 93ad800a (2024-08-18) Add initial main.py [xxxxxxxxxx]
+   * 834ca7ff (2024-08-18) Move hello.py to lib/ [xxxxxxxxxx]
+   * 08fd0b29 (2024-08-18) Add .gitignore [xxxxxxxxxx]
+   * 1d92dda3 (2024-08-18) (tag: v1) Add comment [xxxxxxxxxx]
+   * 01dda6f1 (2024-08-18) (tag: v1-beta) Add a default value [xxxxxxxxxx]
+   * cf302843 (2024-08-18) Use argv [xxxxxxxxxx]
+   * 2ca693e7 (2024-08-18) Initial commit [xxxxxxxxxx]
+   ```
+
+**Note:**
+
+- the result of a rebase is a linear history in the repository.
+- all commit IDs in `greet` branch after the commit `Add README file` in `main` branch have been changed.
+
+### Merge VS Rebase
+
+- the final result of the rebase is very similar to the merge.
+- the `greet` branch now contains all of its changes, as well as all the changes from the `main` branch.
+- the commit tree is quite different
+  - the commit tree for the `greet` branch has been rewritten so that the `main` branch is a part of the commit history.
+
+#### Check Point: Task 13
+
+In repository **`/d/working/hello`**, there should be:
+
+- **no new commit**
+- current total commits: **10**
+- **no new branch**
+- current total branches: **2**
+- current branch: **main**
+</pre></details></article><article class="panel task"><h3>Task 14 · zip เป็น hello2.zip และส่ง A03</h3><span class="tag">parent workspace → A03</span><p>A03 ควรมี Complete Task 1 / Complete Task 14 เพิ่มจาก base ของระบบ; ZIP ต้องมี .git และสถานะหลัง Task 13</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>cd &quot;WORKSPACE_PATH&quot;
+# สร้าง archive ใหม่จาก hello ปัจจุบัน
+zip -r hello2.zip hello
+unzip -l hello2.zip
+cp hello2.zip A03/
+cd A03
+git add hello2.zip
+git commit -m &quot;Complete Task 14&quot;
+git push origin main</pre></div><div class="expected"><span class="label">Checkpoint / ผลที่ต้องเห็น</span><p>hello: 10 · A03: 2 student commits</p></div><details class="detail"><summary>อ่านต้นฉบับ task14.md</summary><pre class="source"># Task 14
+
+## Submit Repository
+
+### Submit repository `hello`
+
+1. Change into a directory containing your repository **`hello`**, e.g. **`/d/working`**
+
+   **RUN:**
+
+   ```console
+   cd /d/working
+   ```
+
+2. Compress the directory **`hello`** as **`hello2.zip`**.
+
+   Using `zip`:
+
+   **RUN:**
+
+   ```console
+   zip -r hello2.zip hello
+   ```
+
+   Using `7-zip`:
+
+   **RUN:**
+
+   ```console
+   7z a hello2.zip hello
+   ```
+
+   You can use other tools to compress the directory **`hello`** without using the command line.
+
+3. Copy **`hello2.zip`** into your repository (**`/d/working/A03`**).
+
+   ```console
+   cp hello2.zip /d/working/A03/
+   ```
+
+4. Add and commit **`hello2.zip`** to the repository.
+
+   **RUN:**
+
+   ```console
+   git add hello2.zip
+   git commit -m &quot;Complete Task 14&quot;
+   ```
+
+**Note:** For your repository (**`/d/working/A03`**), there should be 2 commits with messages:
+
+1. &quot;Complete Task 1&quot;
+2. &quot;Complete Task 14&quot;
+</pre></details></article></div><div class="assignment-panel" id="assignment-a04" hidden><div class="assignment-intro"><h2>A04 · งานกลุ่มและ API</h2><p>เนื้อหาเสริม · เกินขอบเขตสอบ</p></div><div class="note">A04 เก็บครบเพื่อทบทวน Assignment ทั้งหมด แต่เรื่อง remote collaboration และ API เกินขอบเขตสอบถึง Git Branch ที่แจ้งไว้ ดูคำสั่งและ output เต็มในต้นฉบับแต่ละ task</div><article class="panel task"><h3>Task 1 · Setup</h3><span class="tag orange">เนื้อหาเสริม A04</span><p>Setup / Check Point: Task 1</p><details class="detail" open><summary>ขั้นตอน คำสั่ง และผลลัพธ์จาก task1.md</summary><pre class="source"># Task 1
+
+## Setup
+
+1. Open Git Bash shell.
+
+2. Change into the directory that you have clone this repo to, e.g. **`/d/working/A04`**
+
+   **RUN:**
+
+   ```console
+   cd /d/working/A04
+   ```
+
+3. Configure your name and email **locally** for this repo.
+   Replace **`xxxxxxxxxx`** with your Student ID.
+
+   **RUN:**
+
+   ```console
+   git config user.name &quot;your_name your_surname&quot;
+   git config user.email &quot;xxxxxxxxxx@cn330&quot;
+   ```
+
+4. Edit the **`AUTHORS`** file.
+
+   - Add your information in appropriate section.
+   - Add the following information under your team name:
+
+     - your name and surname
+     - your (mock-up) email address, use format: &lt;xxxxxxxxxx@cn330&gt;
+
+5. Add and commit **`AUTHORS`** to repo.
+
+   **RUN:**
+
+   ```bash
+   git add AUTHORS
+   git commit -m &quot;Complete Task 1&quot;
+   ```
+
+### Check Point: Task 1
+
+In repository **`/d/working/A04`**, there should be:
+
+- **1 new commit**
+- current total commits: **2**
+</pre></details></article><article class="panel task"><h3>Task 2 · Assign Roles</h3><span class="tag orange">เนื้อหาเสริม A04</span><p>Assign Roles / Prepare a local repository / Check Point: Task 2</p><details class="detail" open><summary>ขั้นตอน คำสั่ง และผลลัพธ์จาก task2.md</summary><pre class="source"># Task 2
+
+## Assign Roles
+
+### Prepare a local repository
+
+1. Edit the **`AUTHORS`** file.
+
+   Decide among your team members, a role each member will take. There are 2 roles, a **maintainer** and a **collaborator**.
+
+   For this assignment
+
+   - one team member will be a **maintainer**
+   - other team members will be **collaborator A**, **collaborator B** etc.
+
+   Append a role to each team member, for example:
+
+   ```text
+   Team X
+   ======
+   Name1 Surname1 &lt;xxxxxxxxxx@cn330&gt; Maintainer
+   Name2 Surname2 &lt;xxxxxxxxxx@cn330&gt; Collaborator A
+   Name3 Surname3 &lt;xxxxxxxxxx@cn330&gt; Collaborator B
+   Name4 Surname4 &lt;xxxxxxxxxx@cn330&gt; Collaborator C
+   ```
+
+2. Add and commit **`AUTHORS`** to repo.
+
+   **RUN:**
+
+   ```bash
+   git add AUTHORS
+   git commit -m &quot;Complete Task 2&quot;
+   ```
+
+### Check Point: Task 2
+
+In repository **`/d/working/A04`**, there should be:
+
+- **1 new commit**
+- current total commits: **3**
+</pre></details></article><article class="panel task"><h3>Task 3 · Prepare Repositories</h3><span class="tag orange">เนื้อหาเสริม A04</span><p>Prepare Repositories</p><details class="detail" open><summary>ขั้นตอน คำสั่ง และผลลัพธ์จาก task3.md</summary><pre class="source"># Task 3
+
+## Prepare Repositories
+
+For Maintainer, complete tasks in **task3_1.md**
+For Collaborator, complete tasks in **task3_2.md**
+</pre></details></article><article class="panel task"><h3>Task 3_1 · Tasks for Maintainer</h3><span class="tag orange">เนื้อหาเสริม A04</span><p>Tasks for Maintainer / Overview of repositories for team members / Prepare a local repository / Create a repository on GitHub / Add local commit to **`origin`**</p><details class="detail" open><summary>ขั้นตอน คำสั่ง และผลลัพธ์จาก task3_1.md</summary><pre class="source"># Task 3_1
+
+## Tasks for Maintainer
+
+### Overview of repositories for team members
+
+&lt;figure style=&quot;text-align: center&quot;&gt;
+   &lt;img src=&quot;img/simple_api_repo_overview.png&quot; alt=&quot;Repositories overview&quot; style=&quot;height:100%&quot;&gt;
+   &lt;figcaption&gt;Repositories overview&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+### Prepare a local repository
+
+1. Open `Git Bash`.
+2. From your cloned repo, extract the file **`simple_api.zip`** into a directory (**outside this repository**), e.g. **`/d/working`**. Then change into the directory.
+
+   **RUN:**
+
+   ```console
+   cd /d/working
+   unzip /d/working/A04/simple_api.zip
+   cd simple_api
+   ```
+
+3. Check that you have the correct directory. There should be 3 files:
+
+   - **`.gitattributes`**
+   - **`.gitignore`**
+   - **`main.py`**
+
+   **RUN:**
+
+   ```console
+   ls -a
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   .  ..  .gitattributes  .gitignore  main.py
+   ```
+
+4. Initialise the directory as a Git repository.
+
+   **RUN:**
+
+   ```console
+   git init
+   ```
+
+5. Configure your name and email **locally** for this repo.
+   Replace **`xxxxxxxxxx`** with your Student ID.
+
+   **RUN:**
+
+   ```console
+   git config user.name &quot;your_name your_surname&quot;
+   git config user.email &quot;xxxxxxxxxx@cn330&quot;
+   ```
+
+6. Add all 3 files and create the first commit for this repository
+
+   **RUN:**
+
+   ```console
+   git add main.py .gitignore .gitattributes
+   git commit -m &quot;Initial commit&quot;
+   ```
+
+### Create a repository on GitHub
+
+1. With your account on GitHub, create a new repository named **`simple_api`**.
+
+2. For example, for a **maintainer** with username **`xxxxxxxxxx`**:
+
+   Your new repository should be: **`https://github.com/xxxxxxxxxx/simple_api`**
+
+   This repository will be used as **maintainer**&#x27;s remote **`origin`**.
+
+### Add local commit to **`origin`**
+
+1. Go to the directory **`simple_api`** on you local machine.
+
+   **RUN:**
+
+   ```console
+   cd /d/working/simple_api
+   ```
+
+2. Add a reference to remote repository on GitHub.
+
+   The remote repository on GitHub **`simple_api`** will be called **`origin`**.
+
+   **RUN:**
+
+   ```console
+   git remote add origin https://github.com/xxxxxxxxxx/simple_api.git
+   ```
+
+   The above command adds a reference to the remote repository using name **`origin`**.
+
+3. Push local commit(s) to the remote repository.
+
+   **RUN:**
+
+   ```console
+   git push -u origin main
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Enumerating objects: 5, done.
+   Counting objects: 100% (5/5), done.
+   Delta compression using up to 4 threads
+   Compressing objects: 100% (5/5), done.
+   Writing objects: 100% (5/5), 3.45 KiB | 272.00 KiB/s, done.
+   Total 5 (delta 0), reused 0 (delta 0), pack-reused 0
+   To https://github.com/xxxxxxxxxx/simple_api.git
+    * [new branch]        main -&gt; main
+   branch &#x27;main&#x27; set up to track &#x27;origin/main&#x27;.
+   ```
+
+   **NOTE:**
+
+   - `push` command pushes local commit(s) on current branch (`main`) to remote repository using reference **`origin`** on branch `main`
+   - option `-u` sets this local branch to also track the remote branch
+   - the branch **`main`** on **`origin`** is a **remote branch**.
+   - the branch **origin/main** on local repo is a **remote tracking branch**
+
+4. Check current local branches.
+
+   **RUN:**
+
+   ```console
+   git branch
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * main
+   ```
+
+5. Check current all branches (local and remote branches).
+
+   **RUN:**
+
+   ```console
+   git branch -a
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * main
+     remotes/origin/main
+   ```
+
+   **NOTE:**
+
+   - option `-a` lists both remote and local branches
+
+6. Check current all branches (local and remote branches) with more information.
+
+   **RUN:**
+
+   ```console
+   git branch -av
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * main                5b25c744 Initial commit
+     remotes/origin/main 5b25c744 Initial commit
+   ```
+
+7. Check current all branches (local and remote branches) with more details.
+
+   **RUN:**
+
+   ```console
+   git branch -avv
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * main                5b25c744 [origin/main] Initial commit
+     remotes/origin/main 5b25c744 Initial commit
+   ```
+
+   **NOTE:**
+
+   - local branch `main` is tracking remote repository `origin` on branch `main`. i.e. remote branch `origin/main`
+
+8. See remote repository `origin`.
+
+   **RUN:**
+
+   ```console
+   git remote show origin
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * remote origin
+     Fetch URL: https://github.com/xxxxxxxxxx/simple_api.git
+     Push  URL: https://github.com/xxxxxxxxxx/simple_api.git
+     HEAD branch: main
+     Remote branch:
+       main tracked
+     Local branch configured for &#x27;git pull&#x27;:
+       main merges with remote main
+     Local ref configured for &#x27;git push&#x27;:
+       main pushes to main (up to date)
+   ```
+
+9. Check log.
+
+   **RUN:**
+
+   ```console
+   git log --oneline --graph --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * 5b25c744 (HEAD -&gt; main, origin/main) Initial commit
+   ```
+
+### **Maintainer**&#x27;s view of repositories
+
+   &lt;figure style=&quot;text-align: center&quot;&gt;
+      &lt;img src=&quot;img/simple_api_repo_maintainer_view.png&quot; alt=&quot;Maintainer&#x27;s view&quot; style=&quot;height:100%&quot;&gt;
+      &lt;figcaption&gt;Maintainer&#x27;s view&lt;/figcaption&gt;
+   &lt;/figure&gt;
+
+### Check Point: Task 3_1
+
+#### For Maintainer
+
+In repository **`/d/working/simple_api`**, there should be:
+
+- **1 new commit**
+- current total commits: **1**
+- local branches: **1**
+- remote branches: **1**
+- remote tracking branch: **1**
+</pre></details></article><article class="panel task"><h3>Task 3_2 · Tasks for Collaborator(s)</h3><span class="tag orange">เนื้อหาเสริม A04</span><p>Tasks for Collaborator(s) / Overview of repositories for team members / Create a forked repository on GitHub / Add remote `upstream` / **Collaborator**&#x27;s view of repositories</p><details class="detail" open><summary>ขั้นตอน คำสั่ง และผลลัพธ์จาก task3_2.md</summary><pre class="source"># Task 3_2
+
+## Tasks for Collaborator(s)
+
+### Overview of repositories for team members
+
+&lt;figure style=&quot;text-align: center&quot;&gt;
+   &lt;img src=&quot;img/simple_api_repo_overview.png&quot; alt=&quot;Repositories overview&quot; style=&quot;width:100%&quot;&gt;
+   &lt;figcaption&gt;Repositories overview&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+### Create a forked repository on GitHub
+
+1. Make sure you have signed in with your GitHub account.
+
+2. Use a browser to open the **maintainer**&#x27;s repository, e.g. **`https://github.com/xxxxxxxxxx/simple_api`**
+
+3. Create a **fork** of the **maintainer**&#x27;s repository.
+
+   For example, for a **collaborator** with username **`aaaaaaaaaa`**:
+
+   Name your new **forked** repository as **`simple_api_fork`**.
+
+   Your newly forked repository on GitHub will be: **`https://github.com/aaaaaaaaaa/simple_api_fork`**
+
+   Leave the option `Copy the main branch only` to its default (default is checked).
+
+4. Clone the forked repository **`simple_api_fork`** to your local machine.
+
+   **RUN:**
+
+   ```console
+   cd /d/working/
+   git clone https://github.com/aaaaaaaaaa/simple_api_fork.git
+   cd simple_api_fork
+   ```
+
+5. Configure your name and email **locally** for this repo. Replace **`xxxxxxxxxx`** with your Student ID.
+
+   **RUN:**
+
+   ```console
+   git config user.name &quot;your_name your_surname&quot;
+   git config user.email &quot;xxxxxxxxxx@cn330&quot;
+   ```
+
+6. Check current local branches.
+
+   **RUN:**
+
+   ```console
+   git branch
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * main
+   ```
+
+6. Check current all branches (local and remote branches).
+
+   **RUN:**
+
+   ```console
+   git branch -a
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * main
+     remotes/origin/HEAD -&gt; origin/main
+     remotes/origin/main
+   ```
+
+   **NOTE:**
+
+   - option `-a` lists both remote and local branches
+
+7. Check current all branches (local and remote branches) with more information.
+
+   **RUN:**
+
+   ```console
+   git branch -av
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * main                5b25c744 Initial commit
+     remotes/origin/HEAD -&gt; origin/main
+     remotes/origin/main 5b25c744 Initial commit
+   ```
+
+8. Check current all branches (local and remote branches) with more details.
+
+   **RUN:**
+
+   ```console
+   git branch -avv
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * main                5b25c744 [origin/main] Initial commit
+     remotes/origin/HEAD -&gt; origin/main
+     remotes/origin/main 5b25c744 Initial commit
+   ```
+
+   **NOTE:**
+
+   - local branch `main` is tracking remote repository `origin` on branch `main`. i.e. remote branch `origin/main`
+
+9. See remote repository `origin`.
+
+   **RUN:**
+
+   ```console
+   git remote show origin
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * remote origin
+     Fetch URL: https://github.com/aaaaaaaaaa/simple_api_fork.git
+     Push  URL: https://github.com/aaaaaaaaaa/simple_api_fork.git
+     HEAD branch: main
+     Remote branch:
+       main tracked
+     Local branch configured for &#x27;git pull&#x27;:
+       main merges with remote main
+     Local ref configured for &#x27;git push&#x27;:
+       main pushes to main (up to date)
+   ```
+
+### Add remote `upstream`
+
+1. Add maintainer&#x27;s repository as another remote repository with name **`upstream`**.
+
+   The remote maintainer&#x27;s repository on GitHub **`simple_api`** will be called **`upstream`**.
+
+   **RUN:**
+
+   ```console
+   git remote add upstream https://github.com/xxxxxxxxxx/simple_api.git
+   ```
+
+   The above command adds a reference as another remote repository using name **`upstream`**.
+
+2. Check current remote repositories.
+
+   **RUN:**
+
+   ```console
+   git remote -v
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   origin   https://github.com/aaaaaaaaaa/simple_api_fork.git (fetch)
+   origin   https://github.com/aaaaaaaaaa/simple_api_fork.git (push)
+   upstream https://github.com/xxxxxxxxxx/simple_api.git (fetch)
+   upstream https://github.com/xxxxxxxxxx/simple_api.git (push)
+   ```
+
+3. See remote repository `upstream`.
+
+   **RUN:**
+
+   ```console
+   git remote show upstream
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * remote upstream
+     Fetch URL: https://github.com/xxxxxxxxxx/simple_api.git
+     Push  URL: https://github.com/xxxxxxxxxx/simple_api.git
+     HEAD branch: main
+     Remote branch:
+       main new (next fetch will store in remotes/upstream)
+     Local ref configured for &#x27;git push&#x27;:
+       main pushes to main (up to date)
+   ```
+
+4. Get any update from **`upstream`**.
+
+   **RUN:**
+
+   ```console
+   git fetch upstream
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   From https://github.com/xxxxxxxxxx/simple_api
+    * [new branch]        main       -&gt; upstream/main
+   ```
+
+5. Check log.
+
+   **RUN:**
+
+   ```console
+   git log --oneline --graph --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * 5b25c744 (HEAD -&gt; main, upstream/main, origin/main, origin/HEAD) Initial commit
+   ```
+
+### **Collaborator**&#x27;s view of repositories
+
+   &lt;figure style=&quot;text-align: center&quot;&gt;
+      &lt;img src=&quot;img/simple_api_repo_collaborator_a_view.png&quot; alt=&quot;Collaborator A&#x27;s view&quot; style=&quot;width:100%&quot;&gt;
+      &lt;figcaption&gt;Collaborator A&#x27;s view&lt;/figcaption&gt;
+   &lt;/figure&gt;
+
+---
+
+   &lt;figure style=&quot;text-align: center&quot;&gt;
+      &lt;img src=&quot;img/simple_api_repo_collaborator_b_view.png&quot; alt=&quot;Collaborator B&#x27;s view&quot; style=&quot;width:100%&quot;&gt;
+      &lt;figcaption&gt;Collaborator B&#x27;s view&lt;/figcaption&gt;
+   &lt;/figure&gt;
+
+### Check Point: Task 3
+
+#### For Each Collaborator
+
+In repository **`/d/working/simple_api_fork`**, there should be:
+
+- **0 new commit**
+- current total commits: **1**
+- local branches: **1**
+- remote branches: **2**
+- remote tracking branch: **1**
+</pre></details></article><article class="panel task"><h3>Task 4 · Prepare and Run Initial API</h3><span class="tag orange">เนื้อหาเสริม A04</span><p>Prepare and Run Initial API / Create virtual environment</p><details class="detail" open><summary>ขั้นตอน คำสั่ง และผลลัพธ์จาก task4.md</summary><pre class="source"># Task 4
+
+## Prepare and Run Initial API
+
+### Create virtual environment
+
+1. For each member on their local repository:
+
+   - for maintainer - e.g. go to directory **`/d/working/simple_api`**
+   - for collaborators - e.g. go to directory **`/d/working/simple_api_fork`**
+
+   For **maintainer**:
+
+   **RUN:**
+
+   ```console
+   cd /d/working/simple_api
+   ```
+
+   For **collaborator**:
+
+   **RUN:**
+
+   ```console
+   cd /d/working/simple_api_fork
+   ```
+
+2. Create a **virtual environment** inside the directory **`simple_api`** or **`simple_api_fork`**.
+
+   For Linux/MacOS:
+
+   **RUN:**
+
+   ```console
+   python3 -m venv venv
+   ```
+
+   For Windows:
+
+   **RUN:**
+
+   ```console
+   python -m venv venv
+   ```
+
+   **NOTE:**
+
+   - option **`-m`** with argument (first) **`venv`** is to use module `venv`
+   - the (second) **`venv`** argument is the name of directory for new virtual environment
+
+3. Activate the created virtual environment.
+
+   For Linux/MacOS:
+
+   **RUN:**
+
+   ```console
+   . ./venv/bin/activate
+   ```
+
+   For Windows:
+
+   **RUN:**
+
+   ```console
+   . ./venv/Scripts/activate
+   ```
+
+   **NOTE:**
+
+   - note the `.` (dot) at beginning of the command
+   - your prompt should now start with **`(venv)`**
+
+For Maintainer, continue to complete tasks in **task4_1.md**
+
+For Collaborator, continue to complete tasks in **task4_2.md**
+</pre></details></article><article class="panel task"><h3>Task 4_1 · Tasks for Maintainer</h3><span class="tag orange">เนื้อหาเสริม A04</span><p>Tasks for Maintainer / Create dependencies for this application / Create a commit for dependencies</p><details class="detail" open><summary>ขั้นตอน คำสั่ง และผลลัพธ์จาก task4_1.md</summary><pre class="source"># Task 4_1
+
+## Tasks for Maintainer
+
+### Create dependencies for this application
+
+1. Install dependencies for this **`simple_api`** application.
+
+   **RUN:**
+
+   ```console
+   pip install fastapi uvicorn
+   ```
+
+   **NOTE:**
+
+   - this will install `fastapi` and `uvicorn` packages with their dependencies, required by this application
+
+2. Run initial application
+
+   **RUN:**
+
+   ```console
+   uvicorn main:app --port 9000 --reload
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   INFO:     Will watch for changes in these directories: [&#x27;/d/working/simple_api&#x27;]
+   INFO:     Uvicorn running on http://127.0.0.1:9000 (Press CTRL+C to quit)
+   INFO:     Started reloader process [10114] using StatReload
+   INFO:     Started server process [10116]
+   INFO:     Waiting for application startup.
+   INFO:     Application startup complete.
+   ```
+
+   **NOTE:**
+
+   - **`main`** refers to the module name from `main.py`
+   - **`app`** refers to an instance of an application object (from class `FastAPI`) created in file `main.py`
+   - option **`--port`** specifies port number to use, i.e. argument `9000`
+   - option **`reload`** allows automatic reloading when there is a change in `main.py`
+
+3. Test application using browser.
+
+   Open URL: **`http://127.0.0.1:9000`**.
+
+   You should see a JSON object.
+
+   **OUTPUT:**
+
+   ```console
+   {
+       message: &quot;Hello there&quot;
+   }
+   ```
+
+4. Stop the application.
+
+   Press **`Ctrl+C`** to stop the application
+
+### Create a commit for dependencies
+
+1. Create a **`requirements.txt`** file.
+
+   **RUN:**
+
+   ```console
+   pip freeze &gt; requirements.txt
+   ```
+
+2. Add **`requirements.txt`** to the repo.
+
+   **RUN:**
+
+   ```console
+   git add requirements.txt
+   ```
+
+3. Create a commit.
+
+   **RUN:**
+
+   ```console
+   git commit -m &quot;Add initial requirements.txt&quot;
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   [main 23aa196f] Add initial requirements.txt
+    1 file changed, 0 insertions(+), 0 deletions(-)
+    create mode 100644 requirements.txt
+   ```
+
+4. Push local change to remote repository **`origin`**.
+
+   **RUN:**
+
+   ```console
+   git push
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Enumerating objects: 4, done.
+   Counting objects: 100% (4/4), done.
+   Delta compression using up to 4 threads
+   Compressing objects: 100% (2/2), done.
+   Writing objects: 100% (3/3), 277 bytes | 277.00 KiB/s, done.
+   Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+   remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+   To https://github.com/xxxxxxxxxx/simple_api.git
+      5b25c744..23aa196f  main -&gt; main
+   ```
+
+#### Check Point: Task 4_1
+
+In repository **`/d/working/simple_api`**, there should be:
+
+- **1 new commit**
+- current total commits: **2**
+- local branches: **1**
+- remote branches: **1**
+- remote tracking branch: **1**
+</pre></details></article><article class="panel task"><h3>Task 4_2 · Tasks for Collaborator(s)</h3><span class="tag orange">เนื้อหาเสริม A04</span><p>Tasks for Collaborator(s) / Get any update from **`upstream`** / Merge any new commit from **`upstream`** / Install dependencies for this application / Push local change to **`origin`**</p><details class="detail" open><summary>ขั้นตอน คำสั่ง และผลลัพธ์จาก task4_2.md</summary><pre class="source"># Task 4_2
+
+## Tasks for Collaborator(s)
+
+For simplified workflow with predictable commit sequence, wait until Maintainer has completed tasks in `task4_1.md`.
+
+### Get any update from **`upstream`**
+
+1. Get any update from **`upstream`**.
+
+   **RUN:**
+
+   ```console
+   git fetch upstream
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   remote: Enumerating objects: 4, done.
+   remote: Counting objects: 100% (4/4), done.
+   remote: Compressing objects: 100% (1/1), done.
+   remote: Total 3 (delta 1), reused 3 (delta 1), pack-reused 0
+   Unpacking objects: 100% (3/3), 257 bytes | 257.00 KiB/s, done.
+   From https://github.com/xxxxxxxxxx/simple_api
+      5b25c744..23aa196f  main       -&gt; upstream/main
+   ```
+
+2. Check for any new commit.
+
+   **RUN:**
+
+   ```console
+   git log --oneline --graph --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * 23aa196f (upstream/main) Add initial requirements.txt
+   * 5b25c744 (HEAD -&gt; main, origin/main, origin/HEAD) Initial commit
+   ```
+
+### Merge any new commit from **`upstream`**
+
+1. Make sure you are on local branch **`main`**
+
+   **RUN:**
+
+   ```console
+   git switch main
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Already on &#x27;main&#x27;
+   Your branch is up to date with &#x27;origin/main&#x27;
+   ```
+
+2. Merge any change from **`upstream`** to local branch **`main`**
+
+   **RUN:**
+
+   ```console
+   git merge upstream/main
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Updating 5b25c744..23aa196f
+   Fast-forward
+    requirements.txt | 0
+    1 file changed, 0 insertions(+), 0 deletions(-)
+    create mode 100644 requirements.txt
+   ```
+
+   **NOTE:**
+
+   - this is a simple **fast-forward** merge
+
+### Install dependencies for this application
+
+1. Install dependencies for this **`simple_api_fork`** application.
+
+   Make sure you are in activated virtual environment.
+
+   **RUN:**
+
+   ```console
+   pip install -r requirements.txt
+   ```
+
+   **NOTE:**
+
+   - option **`-r`** specifies requirement file to use
+   - this will install all dependencies (packages) required by this application
+
+2. Run initial application
+
+   **RUN:**
+
+   ```console
+   uvicorn main:app --port 9000 --reload
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   INFO:     Will watch for changes in these directories: [&#x27;/d/working/simple_api_fork&#x27;]
+   INFO:     Uvicorn running on http://127.0.0.1:9000 (Press CTRL+C to quit)
+   INFO:     Started reloader process [10114] using StatReload
+   INFO:     Started server process [10116]
+   INFO:     Waiting for application startup.
+   INFO:     Application startup complete.
+   ```
+
+   **NOTE:**
+
+   - **`main`** refers to the module name from `main.py`
+   - **`app`** refers to an instance of an application object (from class `FastAPI`)  created in file `main.py`
+   - option **`--port`** specifies port number to use, i.e. argument `9000`
+   - option **`reload`** allows automatic reloading when there is a change in `main.py`
+  
+3. Test application using browser.
+
+   Open URL: **`http://127.0.0.1:9000`**.
+
+   You should see a JSON object.
+
+   **OUTPUT:**
+
+   ```console
+   {
+       message: &quot;Hello there&quot;
+   }
+   ```
+
+4. Stop the application.
+
+   Press **`Ctrl+C`** to stop the application
+
+### Push local change to **`origin`**
+
+1. Check current status.
+
+   **RUN:**
+
+   ```console
+   git status
+   ```
+
+   ***OUTPUT:**
+
+   ```console
+   On branch main
+   Your branch is ahead of &#x27;origin/main&#x27; by 1 commit.
+     (use &quot;git push&quot; to publish your local commits)
+   
+   nothing to commit, working tree clean
+   ```
+
+2. Check log.
+
+   **RUN:**
+
+   ```console
+   git log --oneline --graph --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * 23aa196f (HEAD -&gt; main, upstream/main) Add initial requirements.txt
+   * 5b25c744 (origin/main, origin/HEAD) Initial commit
+   ```
+
+3. Push local commits to **`origin`**
+
+   **RUN:**
+
+   ```console
+   git push
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
+   To github.com:cn20xy/simple_api_fork.git
+      5b25c744..23aa196f  main -&gt; main
+   ```
+
+4. Check current status again.
+
+   **RUN:**
+
+   ```console
+   git status
+   ```
+
+   ***OUTPUT:**
+
+   ```console
+   On branch main
+   Your branch is up to date with &#x27;origin/main&#x27;.
+   
+   nothing to commit, working tree clean
+   ```
+
+5. Check log again.
+
+   **RUN:**
+
+   ```console
+   git log --oneline --graph --all
+   ```
+
+   **OUTPUT:**
+
+   ```console
+   * 23aa196f (HEAD -&gt; main, upstream/main, origin/main, origin/HEAD) Add initial requirements.txt
+   * 5b25c744 Initial commit
+   ```
+
+#### Check Point: Task 4_2
+
+In repository **`/d/working/simple_api_fork`**, there should be:
+
+- **0 new commit**
+- current total commits: **2**
+- local branches: **1**
+- remote branches: **2**
+- remote tracking branch: **1**
+</pre></details></article><article class="panel task"><h3>Task 5 · Submit Repository</h3><span class="tag orange">เนื้อหาเสริม A04</span><p>Submit Repository / Submit repository `simple_api` or `simple_api_fork`</p><details class="detail" open><summary>ขั้นตอน คำสั่ง และผลลัพธ์จาก task5.md</summary><pre class="source"># Task 5
+
+## Submit Repository
+
+### Submit repository `simple_api` or `simple_api_fork`
+
+1. Change into a directory containing your repository
+
+   - for Maintainer - **`simple_api`**, e.g. **`/d/working`**
+   - for Collaborators - **`simple_api_fork`**, e.g. **`/d/working`**
+
+   **RUN:**
+
+   ```console
+   cd /d/working
+   ```
+
+2. Compress the directory.
+
+   - for Maintainer -  **`simple_api`** as **`simple_api.zip`**
+   - for Collaborators -  **`simple_api_fork`** as **`simple_api_fork.zip`**
+
+   Using `zip`:
+
+   **RUN:**
+
+   ```console
+   zip -r simple_api.zip simple_api
+   # or
+   zip -r simple_api_fork.zip simple_api_fork
+   ```
+
+   Using `7-zip`:
+
+   **RUN:**
+
+   ```console
+   7z a simple_api.zip simple_api
+   # or
+   7z a simple_api_fork.zip simple_api_fork
+   ```
+
+   You can use other tools to compress the directory without using the command line.
+
+3. Copy **`simple_api.zip`** or **`simple_api_fork.zip`** into your repository (**`/d/working/A04`**).
+
+   ```console
+   # for Maintainer
+   cp simple_api.zip /d/working/A04/
+
+   # for Collaborator
+   cp simple_api_fork.zip /d/working/A04/
+   ```
+
+4. Add and commit **`simple_api.zip`** or **`simple_api_fork.zip`** to the repository.
+
+   **RUN:**
+
+   ```console
+   # for Maintainer
+   git add simple_api.zip
+
+   # for Collaborator
+   git add simple_api_fork.zip
+
+   # for both Maintainer and Collaborator
+   git commit -m &quot;Complete Task 5&quot;
+   ```
+
+**NOTE:**
+
+- For your repository (**`/d/working/A04`**), there should be 3 commits with messages:
+
+1. &quot;Complete Task 1&quot;
+2. &quot;Complete Task 2&quot;
+3. &quot;Complete Task 5&quot;
+</pre></details></article><article class="panel task"><h3>Task 6 · Submission</h3><span class="tag orange">เนื้อหาเสริม A04</span><p>Submission</p><details class="detail" open><summary>ขั้นตอน คำสั่ง และผลลัพธ์จาก task6.md</summary><pre class="source"># Task 6
+
+## Submission
+
+1. Open Git Bash console.
+
+2. Change into the directory that you have cloned this repo,
+   e.g. **`/d/working/A04`**,
+
+   **RUN:**
+
+   ```console
+   cd /d/working/A04
+   ```
+
+3. Submit your work.
+
+   **RUN:**
+
+   ```console
+   git push
+   ```
+</pre></details></article></div></section><section id="concepts" class="view" hidden><h1>เข้าใจสถานะก่อนเลือกคำสั่ง</h1><p class="intro">คำสั่งแต่ละตัวเปลี่ยนคนละส่วนของ Git การรู้สถานะก่อน/หลังช่วยเลือกคำสั่งได้ตรงโจทย์</p><h2>ไฟล์ → index → commit → remote</h2><div class="concept-row"><div class="state"><b>01 · Working tree</b><p>ไฟล์ที่แก้ใน editor อาจต่างจาก snapshot ที่ add ไว้</p><code>git diff</code></div><div class="state"><b>02 · Staging / Index</b><p>snapshot ณ เวลา add ซึ่ง commit ถัดไปจะใช้</p><code>git diff --staged</code></div><div class="state"><b>03 · Local history</b><p>commit ที่บันทึกแล้วพร้อมผู้เขียนและ parent</p><code>git log</code></div><div class="state"><b>04 · Remote</b><p>commits/refs ที่ส่งขึ้น GitHub ไม่รวมไฟล์ที่ยังไม่ commit</p><code>git push</code></div></div><div class="note">A02 Task 3: แก้ default → add → แก้ comment → commit ผลคือ commit มี default แต่ไม่มี comment; comment ยังเป็น unstaged change</div><div class="panel"><h2>อ่าน status แบบ XY</h2><table class="compare"><tr><th>สถานะ</th><th>ความหมาย</th></tr><tr><td><code>?? FILE</code></td><td>untracked</td></tr><tr><td><code> M FILE</code></td><td>แก้ไฟล์ แต่ยังไม่ stage</td></tr><tr><td><code>M  FILE</code></td><td>stage การแก้ไว้แล้ว</td></tr><tr><td><code>MM FILE</code></td><td>stage แล้วแก้เพิ่มอีก; index และ working tree คนละเวอร์ชัน</td></tr><tr><td><code>UU FILE</code></td><td>conflict ทั้งสองฝั่งแก้ ต้อง resolve</td></tr></table><p>X เทียบ index กับ HEAD · Y เทียบ working tree กับ index</p></div><div class="panel"><h2>สอง repo ใน A02/A03</h2><pre class="flow">WORKSPACE/
+├── A03/                 repo ส่ง assignment
+│   ├── .git/
+│   └── hello2.zip       archive ที่ commit เพื่อส่ง
+└── hello/               repo ฝึก Git แยกต่างหาก
+    ├── .git/            history, branches, tags
+    ├── main.py
+    └── lib/</pre><p>commit ใน hello ไม่เพิ่ม commit ใน A03; zip/copy ไม่ commit ให้เอง และ ZIP ไม่อัปเดตเมื่อแก้ hello ต่อ</p></div><div class="panel"><h2>Merge รับงานเข้า branch ปัจจุบัน</h2><pre class="flow">ก่อน merge:
+           G1──G2       greet
+          /
+BASE─────┤
+          \
+           R            main
+
+อยู่ greet แล้ว git merge main:
+           G1──G2──M    greet
+          /       /
+BASE─────┴───────R      main
+
+M มีสอง parents; main ยังอยู่ R</pre><p><code>git switch greet; git merge main</code> รับ main เข้า greet หากเกิด conflict ยังไม่มี merge commit ที่สมบูรณ์จน resolve และ commit</p><h3>markers บอกฝั่งไหน</h3><pre class="flow">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+โค้ดฝั่ง current branch (greet)
+=======
+โค้ดฝั่ง incoming (main)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; main</pre><p>A03 ต้องใช้ input จาก main และ Greeter จาก greet ร่วมกัน ไม่เลือกทั้งฝั่งโดยไม่อ่านเป้าหมาย</p></div><div class="panel"><h2>หลัง reset → rebase → fast-forward ใน A03</h2><pre class="flow">ก่อน rebase:         หลัง rebase บน main:
+       G1──G2 greet  BASE──R──G1′──G2′ greet
+      /                    main
+BASE─┤
+      \
+       R main        หลัง switch main; merge greet:
+                     BASE──R──G1′──G2′ main, greet</pre><p>rebase replay งานเป็น hash ใหม่; fast-forward เลื่อน main ไปปลายเดียวกับ greet โดยไม่สร้าง merge commit ใหม่ ยอด reachable จาก local main/greet ในโจทย์ยังเป็น 10</p></div><div class="panel"><h2>ย้อนดู ย้อนไฟล์ และย้อน branch ต่างกัน</h2><table class="compare"><tr><th>คำสั่ง</th><th>HEAD / branch</th><th>Index / Working tree</th></tr><tr><td>checkout HASH</td><td>HEAD detached; branch เดิมไม่ย้าย</td><td>tracked files ปรับตาม checkout</td></tr><tr><td>restore --source=HASH FILE</td><td>ไม่ย้าย</td><td>เปลี่ยนเฉพาะ working file ปกติ</td></tr><tr><td>reset --soft HASH</td><td>ย้าย current branch</td><td>คงทั้ง index และ working tree</td></tr><tr><td>reset --mixed HASH</td><td>ย้าย current branch</td><td>index ตรง target; working tree คงเดิม</td></tr><tr><td>reset --hard HASH</td><td>ย้าย current branch</td><td>index / tracked files ตรง target; changes ที่ไม่ commit อาจหาย</td></tr></table></div><div class="panel"><h2>ผู้เขียน commit กับบัญชี GitHub</h2><p>GitHub username ใช้สิทธิ์รับงาน/clone/push · user.name คือชื่อจริงใน commit · user.email ในงานใช้ STUDENT_ID@cn330 · Team ใน AUTHORS เป็นส่วนรายชื่อ ไม่ใช่ชื่อ local repo</p><p>local config ของ A03 ไม่ส่งต่อไป hello อัตโนมัติ ตั้ง/ตรวจในทุก repo ที่จะ commit</p></div></section><section id="errors" class="view" hidden><h1>ติด error ทำอย่างไรต่อ</h1><p class="intro">อ่านสถานะและสาเหตุก่อนเลือกคำสั่งแก้</p><div class="grid"><article class="card"><h3>not a git repository</h3><p>อยู่ผิด directory หรือ archive ไม่มี .git</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>pwd
+ls -a</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>cd เข้า repo ที่ถูก ถ้า ZIP ไม่มีประวัติ ให้ใช้ archive ที่มี .git; อย่า init ใหม่เพื่อปิดอาการ</p></div></article><article class="card"><h3>Author identity unknown</h3><p>repo นี้ยังไม่มี effective name/email</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git config --get user.name
+git config --get user.email</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>ตั้ง local identity ใน repo ที่กำลัง commit</p></div></article><article class="card"><h3>Permission denied (publickey) / Repository not found</h3><p>URL, account, SSH key หรือ alias ไม่ตรงสิทธิ์</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git remote -v
+gh student whoami</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>ตรวจบัญชี/URL ของ assignment; git config author ไม่แก้ login; github-tu ต้องมี alias ในเครื่องนั้น</p></div></article><article class="card"><h3>nothing to commit</h3><p>อาจยังไม่ stage, ไม่มี changes, หรืออยู่ผิด repo</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+git diff
+git diff --staged</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>เลือก stage ตามโจทย์ ตรวจ log ว่าทำแล้วหรือไม่ ไม่เพิ่ม empty commit เพื่อให้จำนวนครบเอง</p></div></article><article class="card"><h3>ไฟล์ขึ้นสองครั้ง / MM</h3><p>stage แล้วแต่แก้เพิ่มใน working tree</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git diff
+git diff --staged</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>A02 ต้อง commit snapshot ที่ staged ก่อน แล้วค่อย add/commit comment อย่า add ซ้ำโดยไม่ดูเป้าหมาย</p></div></article><article class="card"><h3>unmerged paths / both modified</h3><p>merge ค้างเพราะ conflict</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>เปิดไฟล์ รวมพฤติกรรมตามโจทย์ ลบ markers แล้ว add และ commit; หากเลือกยกเลิกใช้ merge --abort</p></div></article><article class="card"><h3>rebase ค้าง</h3><p>replay หยุดเพราะ conflict</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>แก้ไฟล์ → add → git rebase --continue; ถ้ายกเลิกใช้ rebase --abort</p></div></article><article class="card"><h3>detached HEAD</h3><p>checkout hash/tag โดยไม่อยู่ branch</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+git log -1 --oneline</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>ถ้าแค่ดู ให้ switch main; ถ้ามี commit ที่ต้องเก็บ สร้าง branch อ้างอิงก่อนออก</p></div></article><article class="card"><h3>hist is not a git command</h3><p>เครื่องนี้ยังไม่ได้ตั้ง alias hist</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git config --get alias.hist</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>ตั้ง alias หรือใช้ git log --oneline --graph --all</p></div></article><article class="card"><h3>switch จะ overwrite local changes</h3><p>changes ค้างขัดกับ snapshot ปลายทาง</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git status
+git diff</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>จัดการ changes ตามโจทย์ก่อน switch; อย่า reset --hard อัตโนมัติ</p></div></article><article class="card"><h3>push rejected / non-fast-forward</h3><p>remote มี commits ที่ local ยังไม่มี</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git fetch origin
+git log --oneline --graph --all</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>อ่านกราฟและ integrate ตามโจทย์ ไม่ force push อัตโนมัติ</p></div></article><article class="card"><h3>ZIP ไม่มี history / hello ซ้อน hello</h3><p>บีบอัดไม่รวม .git หรือแตกผิดระดับ</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>unzip -l hello.zip</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>zip directory hello ทั้งก้อนจาก parent; archive มี hello/ อยู่แล้วให้แตกที่ parent</p></div></article><article class="card"><h3>commit เปิด Vim</h3><p>editor ต้องการ merge/commit message</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git config --get core.editor</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>Vim: Esc → :wq → Enter บันทึก/ออก; code --wait ใช้ได้เมื่อเครื่องมี VS Code และคำสั่ง code</p></div></article><article class="card"><h3>commit count ไม่ตรง</h3><p>นับผิด repo/refs หรือ commit เกินขั้น</p><div class="codebox"><button class="copy" type="button" data-copy>คัดลอก</button><pre>git rev-list --count main greet
+git log --oneline --graph main greet</pre></div><div class="expected"><span class="label">ทำต่ออย่างไร</span><p>hello counts ไม่ใช่ A03 counts; base ของ Classroom50 มี commits อยู่ก่อน อย่าย้อนประวัติเพียงเพราะนับรวมผิด</p></div></article></div></section><section id="checklist" class="view" hidden><h1>ตรวจงานก่อนส่ง</h1><p class="intro">เลือกตรวจตามรูปแบบที่โจทย์กำหนด ช่องติ๊กใช้ทบทวนในหน้านี้</p><div class="panel checklist"><label><input type="checkbox"><span>repo และ directory ถูกต้อง<br><small>pwd / git rev-parse --show-toplevel</small></span></label><label><input type="checkbox"><span>บัญชี GitHub ถูกต้องสำหรับรับงานและ push<br><small>gh student whoami; ตรวจ remote URL</small></span></label><label><input type="checkbox"><span>ชื่อจริงและ STUDENT_ID@cn330 ตรงโจทย์<br><small>git config --get user.name / user.email</small></span></label><label><input type="checkbox"><span>AUTHORS อยู่ในส่วนทีมของตัวเอง<br><small>เปิดอ่าน AUTHORS</small></span></label><label><input type="checkbox"><span>อยู่ branch ปลายทางที่โจทย์ต้องการ<br><small>git branch --show-current</small></span></label><label><input type="checkbox"><span>commit messages และลำดับตรง task<br><small>git log --oneline --reverse</small></span></label><label><input type="checkbox"><span>ไม่มี merge/rebase ค้าง และ stage ตรงสิ่งที่จะ commit<br><small>git status / git diff --staged</small></span></label><label><input type="checkbox"><span>จำนวน unique commits/branches ตรง checkpoint<br><small>hello A03 ปลาย Task 13: main + greet, reachable 10</small></span></label><label><input type="checkbox"><span>tags ชี้เวอร์ชันตามโจทย์<br><small>A02: v1 และ v1-beta</small></span></label><label><input type="checkbox"><span>ZIP ใหม่ตรงกับ hello ปัจจุบันและมี .git<br><small>unzip -l hello2.zip; อย่าตรวจโดยแตกทับ repo เดิม</small></span></label><label><input type="checkbox"><span>commit archive อยู่ใน repo assignment<br><small>A02: Complete Task 8 / A03: Complete Task 14</small></span></label><label><input type="checkbox"><span>remote เป็น repo ที่ระบบสร้างให้บัญชีคุณ<br><small>git remote -v</small></span></label><label><input type="checkbox"><span>push ตามวิธีที่ข้อสอบกำหนดแล้ว<br><small>ตรวจหน้า GitHub ว่ามี commit/ZIP ล่าสุด</small></span></label><label><input type="checkbox"><span>ตรวจผล Actions / feedback / release ของระบบ<br><small>push สำเร็จไม่ได้ยืนยันคะแนน</small></span></label></div><div class="note">Checklist ใช้ทบทวนในหน้านี้ ไม่มีการรันคำสั่งหรือส่งงานให้อัตโนมัติ เลือกเฉพาะรายการที่ข้อสอบต้องการ</div></section><section id="sources" class="view" hidden><h1>ขอบเขตและแหล่งข้อมูล</h1><div class="panel"><h2>แยกข้อเท็จจริงกับแนวฝึก</h2><p>คำสั่งและ checkpoint อ้างอิง A01–A03 ที่มีในชุดงาน ขอบเขตสอบถึง Git Branch ตามที่แจ้ง; A03 มี reset/rebase อยู่จริง ส่วน A04 เก็บไว้ทบทวนครบทุก assignment แต่เป็นเนื้อหาเสริม</p><p>รูปแบบข้อสอบ/คะแนนจริงยังไม่ทราบ ไม่สามารถสรุปว่ารันตามคู่มือแล้วได้คะแนนเต็ม ระบบตรวจในงานเรียก runner ภายนอก</p><p>ระบบรับงานที่พบคือ Classroom50 ผ่าน gh student; invitation URL, key และ assignment ID ของข้อสอบต้องรับจากอาจารย์ ไม่ใช้ a03 เดิมแทนข้อสอบใหม่</p></div><div class="panel"><h2>ข้อความคลาดเคลื่อนที่ต้องอ่านพร้อมบริบท</h2><ul><li>A03 Task 11 เขียน reset greet ทั้งที่ switch อยู่ main — reset current main ตามขั้นตอนและกราฟ</li><li>A03 Task 3 ตัวอย่าง self.who ต้อง indent ภายใน __init__</li><li>คำอธิบาย -f ว่า lib ถูก ignore ไม่ตรง .gitignore ในชุดงานที่ตรวจ — อ่าน rule จริง</li><li>commit บันทึก index ไม่ใช่ทุก changes ใน working tree</li><li>HEAD แบบ detached ยังชี้ commit; commits ไม่ถูกลบทันทีเมื่อ switch</li><li>หลัง cp ZIP ต้องกลับ repo assignment ก่อน git add/commit</li><li>A02/A03 มีสอง student commits แต่รวม base ของ Classroom50 แล้วมากกว่าสองได้</li></ul></div><div class="panel external-list"><h2>เอกสารอ้างอิง</h2><a href="https://nawin.ece.engr.tu.ac.th/cn330/?p=notes" target="_blank" rel="noopener">CN330 Notes</a><a href="https://nawin.ece.engr.tu.ac.th/cn330/topic/git/" target="_blank" rel="noopener">สไลด์ Git</a><a href="https://nawin.ece.engr.tu.ac.th/cn330/topic/git_branch/" target="_blank" rel="noopener">สไลด์ Git Branch</a><a href="https://git-scm.com/docs/git-reset" target="_blank" rel="noopener">Git reset reference</a><a href="https://git-scm.com/docs/git-restore" target="_blank" rel="noopener">Git restore reference</a><a href="https://git-scm.com/docs/git-rebase" target="_blank" rel="noopener">Git rebase reference</a><p>ต้นฉบับ assignment อ่านได้ในหน้าแต่ละ task โดยแสดงข้อความเดิมไว้เทียบ ตัวอย่าง output ในการ์ดสรุปเป็นสิ่งที่ต้องสังเกต ไม่ใช่ output ที่ต้องเหมือนทุกตัวอักษร</p></div></section><footer class="footer">ศึกษาจาก assignment ในชุด CN330 · 6 ต.ค. 2026 · HASH, path, ชื่อ branch และข้อความ commit ให้ใช้ตามโจทย์จริง</footer></main></div><div id="toast" class="toast" role="status" hidden></div><script src="app.js"></script></body></html>
